@@ -28,7 +28,7 @@ public class BairroDaoJDBC implements BairroDao{
 		try {
 			st = conn.prepareStatement(
 					"INSERT INTO bairro "
-					+ "(NOME_BAIRRO "
+					+ "(nome "
 					+ "VALUES "
 					+ "(?)",
 					Statement.RETURN_GENERATED_KEYS);
@@ -63,8 +63,8 @@ public class BairroDaoJDBC implements BairroDao{
 		try {
 			st = conn.prepareStatement(
 					"UPDATE bairro "
-					+ "SET NOME_BAIRRO = ? "
-					+ "WHERE ID = ?");
+					+ "SET nome = ? "
+					+ "WHERE id = ?");
 			
 			st.setString(1, obj.getNome_bairro());
 			st.setInt(2, obj.getId());
@@ -86,7 +86,7 @@ public class BairroDaoJDBC implements BairroDao{
 		try {
 			st = conn.prepareStatement(
 					"DELETE FROM bairro "
-					+ "WHERE ID = ?");
+					+ "WHERE id = ?");
 			st.setInt(1, id);
 			st.executeUpdate();
 		}
@@ -104,14 +104,14 @@ public class BairroDaoJDBC implements BairroDao{
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT * FROM bairro WHERE ID = ?");
+					"SELECT * FROM bairro WHERE id = ?");
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			
 			if(rs.next()) {
 				Bairro obj = new Bairro();
-				obj.setId(rs.getInt("ID"));
-				obj.setNome_bairro(rs.getString("NOME_BAIRRO"));
+				obj.setId(rs.getInt("id"));
+				obj.setNome_bairro(rs.getString("nome"));
 				return obj;
 			}
 			return null;
@@ -131,15 +131,15 @@ public class BairroDaoJDBC implements BairroDao{
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT FROM bairro ORDER BY NOME_BAIRRO");
+					"SELECT FROM bairro ORDER BY nome");
 			rs = st.executeQuery();
 			
 			List<Bairro> list = new ArrayList<>();
 			
 			while (rs.next()) {
 				Bairro obj = new Bairro();
-				obj.setId(rs.getInt("ID"));
-				obj.setNome_bairro(rs.getString("NOME_BAIRRO"));
+				obj.setId(rs.getInt("id"));
+				obj.setNome_bairro(rs.getString("nome"));
 				list.add(obj);
 			}
 			return list;
