@@ -3,6 +3,7 @@ package modelo.dao;
 import java.util.List;
 
 import modelo.entidades.Cidade;
+import modelo.entidades.Uniao_federativa;
 
 public interface CidadeDao {
 	void insert(Cidade obj);
@@ -10,4 +11,5 @@ public interface CidadeDao {
 	void deleteById(Integer id);
 	Cidade findById(Integer id);	
 	List<Cidade> findAll();
+	List<Cidade> findByUf(Uniao_federativa uf);
 }

@@ -7,7 +7,7 @@ public class Cidade implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Integer id;
-	private String nome;
+	private String nome_cidade;
 	private Uniao_federativa uf;
 	
 	public Cidade() {
@@ -16,7 +16,7 @@ public class Cidade implements Serializable{
 	public Cidade(Integer id, String nome, Uniao_federativa uf) {
 		super();
 		this.id = id;
-		this.nome = nome;
+		this.nome_cidade = nome;
 		this.uf = uf;
 	}
 
@@ -28,12 +28,12 @@ public class Cidade implements Serializable{
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getNome_cidade() {
+		return nome_cidade;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setNome_cidade(String nome) {
+		this.nome_cidade = nome;
 	}
 
 	public Uniao_federativa getUf() {
@@ -71,7 +71,7 @@ public class Cidade implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Cidade [id=" + id + ", nome=" + nome + ", uf=" + uf + "]";
+		return "Cidade [id=" + id + ", nome=" + nome_cidade + ", uf=" + uf + "]";
 	}
 	
 }
