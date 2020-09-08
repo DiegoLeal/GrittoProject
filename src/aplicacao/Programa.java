@@ -15,8 +15,7 @@ public class Programa {
 		
 		Scanner sc = new Scanner(System.in);
 		
-		//Usuario usuario = new Usuario(7, "Nicole Araújo", "15.378.794-6", "301.734.964-07", new Date(), "(51) 99290-9249", "F", obj);
-		
+			
 		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
 		
 		System.out.println("=== TEST 1: usuario findById ===");
@@ -24,7 +23,7 @@ public class Programa {
 		System.out.println(usuario);
 		
 		System.out.println("\n=== TEST 2: usuario findByProfissao ===");
-		Profissao profissao = new Profissao(2, null);
+		Profissao profissao = new Profissao(0, null);
 		List<Usuario> list = usuarioDao.findByProfissao(profissao);
 		for (Usuario obj : list) {
 			System.out.println(obj);
@@ -37,21 +36,21 @@ public class Programa {
 		}	
 		
 		System.out.println("\n=== TEST 4: usuario insert ===");
-		Usuario newUsuario = new Usuario(null, "Julio Peixoto", "22.294.720-2", "447.527.438-92", new Date(1952-10-22), "(34) 99226-9815", "M" , profissao);
+		Usuario newUsuario = new Usuario(null, "Levi Moura", "22.610.093-5", "699.620.573-53", new Date(1966-06-14), "(95) 99245-1738", "M" , profissao);
 		usuarioDao.insert(newUsuario);
-		System.out.println("Inserido com Sucesso! New id = " + newUsuario.getId());
+		System.out.println("Inserido com Sucesso! Novo id = " + newUsuario.getId());
 		
-		//System.out.println("\n=== TEST 5: usuario update ===");
-		//usuario = usuarioDao.findById(1);
-		//usuario.setNome("Silvana Rocha");
-		//usuarioDao.update(usuario);
-		//System.out.println("Update efetuado com sucesso! ");
+		System.out.println("\n=== TEST 5: usuario update ===");
+		usuario = usuarioDao.findById(1);
+		usuario.setNome("Silvana Rocha");
+		usuarioDao.update(usuario);
+		System.out.println("Update efetuado com sucesso! ");
 		
-		//System.out.println("\n=== TEST 6: usuario delete ===");	
-	    //System.out.println("Enter id for delete test");
-	    //nt id = sc.nextInt();
-	    //usuarioDao.deleteById(id);
-	    //System.out.println("Deletado com sucesso! ");
+		System.out.println("\n=== TEST 6: usuario delete ===");	
+	    System.out.println("Enter id for delete test");
+	    int id = sc.nextInt();
+	    usuarioDao.deleteById(id);
+	    System.out.println("Deletado com sucesso! ");
 	    
 	    sc.close();
 	}

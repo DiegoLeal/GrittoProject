@@ -13,6 +13,8 @@ public interface UsuarioDao {
 	Usuario findById(Integer id);
 	List<Usuario> findAll();
 	List<Usuario> findByProfissao(Profissao profissao);
+	
+	
 	    
 	
 }
