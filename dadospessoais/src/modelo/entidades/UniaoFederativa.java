@@ -2,17 +2,17 @@ package modelo.entidades;
 
 import java.io.Serializable;
 
-public class Uniao_federativa implements Serializable{
+public class UniaoFederativa implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
 	private Integer id;
 	private String nome_uf;
 	
-	public Uniao_federativa() {
+	public UniaoFederativa() {
 	}
 
-	public Uniao_federativa(Integer id, String nome_uf) {
+	public UniaoFederativa(Integer id, String nome_uf) {
 		super();
 		this.id = id;
 		this.nome_uf = nome_uf;
@@ -50,7 +50,7 @@ public class Uniao_federativa implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Uniao_federativa other = (Uniao_federativa) obj;
+		UniaoFederativa other = (UniaoFederativa) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

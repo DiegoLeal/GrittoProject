@@ -8,12 +8,12 @@ public class Cidade implements Serializable{
 	
 	private Integer id;
 	private String nome_cidade;
-	private Uniao_federativa uf;
+	private UniaoFederativa uf;
 	
 	public Cidade() {
 	}
 
-	public Cidade(Integer id, String nome, Uniao_federativa uf) {
+	public Cidade(Integer id, String nome, UniaoFederativa uf) {
 		super();
 		this.id = id;
 		this.nome_cidade = nome;
@@ -36,11 +36,11 @@ public class Cidade implements Serializable{
 		this.nome_cidade = nome;
 	}
 
-	public Uniao_federativa getUf() {
+	public UniaoFederativa getUf() {
 		return uf;
 	}
 
-	public void setUf(Uniao_federativa uf) {
+	public void setUf(UniaoFederativa uf) {
 		this.uf = uf;
 	}
 
