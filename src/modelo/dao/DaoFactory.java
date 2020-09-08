@@ -1,6 +1,7 @@
 package modelo.dao;
 
 import db.DB;
+
 import modelo.dao.impl.ProfissaoDaoJDBC;
 import modelo.dao.impl.UsuarioDaoJDBC;
 
