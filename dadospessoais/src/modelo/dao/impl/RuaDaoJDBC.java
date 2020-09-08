@@ -1,4 +1,4 @@
-package modelo.dao;
+package modelo.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +11,7 @@ import java.util.List;
 import db.DB;
 import db.DbException;
 import db.DbIntegrityException;
+import modelo.dao.RuaDao;
 import modelo.entidades.Rua;
 
 public class RuaDaoJDBC implements RuaDao{
