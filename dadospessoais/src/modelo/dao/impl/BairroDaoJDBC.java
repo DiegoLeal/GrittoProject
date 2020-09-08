@@ -88,6 +88,7 @@ public class BairroDaoJDBC implements BairroDao{
 					"DELETE FROM bairro "
 					+ "WHERE ID = ?");
 			st.setInt(1, id);
+			st.executeUpdate();
 		}
 		catch(SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
