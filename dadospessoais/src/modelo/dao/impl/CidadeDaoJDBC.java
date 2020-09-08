@@ -31,7 +31,7 @@ private Connection conn;
 		try {
 			st = conn.prepareStatement(
 					"INSERT INTO cidade "
-					+ "(NOME_CIDADE, UF_ID "
+					+ "(nome, uf_id "
 					+ "VALUES "
 					+ "(?,?)",
 					Statement.RETURN_GENERATED_KEYS);
@@ -67,8 +67,8 @@ private Connection conn;
 		try {
 			st = conn.prepareStatement(
 					"UPDATE cidade "
-					+ "SET NOME_CIDADE = ?, UF_ID = ? "
-					+ "WHERE ID = ?");
+					+ "SET nome = ?, uf_id = ? "
+					+ "WHERE id = ?");
 			
 			st.setString(1, obj.getNome_cidade());
 			st.setInt(2, obj.getUf().getId());
@@ -92,7 +92,7 @@ private Connection conn;
 		try {
 			st = conn.prepareStatement(
 					"DELETE FROM cidade "
-					+ "WHERE ID = ?");
+					+ "WHERE id = ?");
 			st.setInt(1, id);
 			st.executeUpdate();
 		}
@@ -111,10 +111,10 @@ private Connection conn;
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT cidade.*, uniao_federativa.NOME_UF as UF "
+					"SELECT cidade.*, uniaofederativa.nome as UF "
 					+ "FROM cidade INNER JOIN uniao_federativa "
-					+ "ON cidade.UF_ID = uniao_federativa.ID "
-					+ "WHERE cidade.ID = ?");
+					+ "ON cidade.uf_id = uniaofederativa.id "
+					+ "WHERE cidade.id = ?");
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			
@@ -140,10 +140,10 @@ private Connection conn;
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT cidade.*, uniao_federativa.NOME_UF as UF "
-					+ "FROM cidade INNER JOIN uniao_federativa "
-					+ "ON cidade.UF_ID = uniao_federativa.ID "
-					+ "ORDER BY NOME_CIDADE");
+					"SELECT cidade.*, uniaofederativa.nome as UF "
+					+ "FROM cidade INNER JOIN uniaofederativa "
+					+ "ON cidade.uf_id = uniaofederativa.id "
+					+ "ORDER BY nome");
 			
 			rs = st.executeQuery();
 			
@@ -151,11 +151,11 @@ private Connection conn;
 			Map<Integer, UniaoFederativa> map = new HashMap<>();
 			
 			while(rs.next()) {
-				UniaoFederativa uf = map.get(rs.getInt("UF_ID"));
+				UniaoFederativa uf = map.get(rs.getInt("uf_id"));
 				
 				if (uf == null) {
 					uf = instatiateUniaoFederativa(rs);
-					map.put(rs.getInt("UF_ID"), uf);					
+					map.put(rs.getInt("uf_id"), uf);					
 				}
 				
 				Cidade obj = instantiateCidade(rs, uf);
@@ -177,11 +177,11 @@ private Connection conn;
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT cidade.*, uniao_federativa.NOME_UF as UF "
-					+ "FROM cidade INNER JOIN uniao_federativa "
-					+ "ON cidade.UF_ID = uniao_federativa.ID "
-					+ "WHERE UF_ID = ?"
-					+ "ORDER BY NOME_CIDADE");
+					"SELECT cidade.*, uniaofederativa.nome as UF "
+					+ "FROM cidade INNER JOIN uniaofederativa "
+					+ "ON cidade.uf_id = uniaofederativa.id "
+					+ "WHERE uf_id = ?"
+					+ "ORDER BY nome");
 			st.setInt(1, uf.getId());
 			
 			rs = st.executeQuery();
@@ -190,11 +190,11 @@ private Connection conn;
 			Map<Integer, UniaoFederativa> map = new HashMap<>();
 			
 			while(rs.next()) {
-				UniaoFederativa uniao = map.get(rs.getInt("UF_ID"));
+				UniaoFederativa uniao = map.get(rs.getInt("uf_id"));
 				
 				if (uniao == null) {
 					uniao = instatiateUniaoFederativa(rs);
-					map.put(rs.getInt("UF_ID"), uniao);					
+					map.put(rs.getInt("uf_id"), uniao);					
 				}
 				
 				Cidade obj = instantiateCidade(rs, uniao);
@@ -213,15 +213,15 @@ private Connection conn;
 	
 	private UniaoFederativa instatiateUniaoFederativa(ResultSet rs) throws SQLException{
 		UniaoFederativa uf = new UniaoFederativa();
-		uf.setId(rs.getInt("UF_ID"));
+		uf.setId(rs.getInt("uf_id"));
 		uf.setNome_uf(rs.getString("UF"));
 		return uf;
 	}
 	
 	private Cidade instantiateCidade(ResultSet rs, UniaoFederativa uf) throws SQLException {
 		Cidade obj = new Cidade();
-		obj.setId(rs.getInt("ID"));
-		obj.setNome_cidade(rs.getString("NOME_CIDADE"));
+		obj.setId(rs.getInt("id"));
+		obj.setNome_cidade(rs.getString("nome"));
 		obj.setUf(uf);
 		return obj;
 	}
