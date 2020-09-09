@@ -11,9 +11,9 @@ public interface AgendaDao {
 
     Agenda findById(Agenda agenda) throws SQLException;
 
-    Agenda update(Agenda agenda);
+    Agenda update(Agenda agenda) throws SQLException;
 
-    Agenda save(Agenda agenda);
+    Agenda save(Agenda agenda) throws SQLException;
 
-    Set<Agenda> findAll();
+    Set<Agenda> findAll() throws SQLException;
 }

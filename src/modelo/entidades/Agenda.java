@@ -1,38 +1,31 @@
 package modelo.entidades;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Agenda implements Modal {
 
-    public Agenda(Long idAgenda, LocalDate data, String mensagem, Integer enderecoId, String historico, LocalDateTime hora) {
-        this.idAgenda = idAgenda;
+    public Agenda(Long id, LocalDate data, String mensagem, String historico, LocalTime hora) {
+        this.id = id;
         this.data = data;
-        this.mensagem = mensagem;
-        this.enderecoId = enderecoId;
+        this.descricao = mensagem;
         this.historico = historico;
         this.hora = hora;
     }
 
-    private Long idAgenda;
+    private Long id;
 
     private LocalDate data;
 
-    private String mensagem;
-
-    private Integer enderecoId;
+    private String descricao;
 
     private String historico;
 
-    private LocalDateTime hora;
+    private LocalTime hora;
 
-    public Long getIdAgenda() {
-        return idAgenda;
-    }
-
-    public void setIdAgenda(Long idAgenda) {
-        this.idAgenda = idAgenda;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public LocalDate getData() {
@@ -43,20 +36,12 @@ public class Agenda implements Modal {
         this.data = data;
     }
 
-    public String getMensagem() {
-        return mensagem;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setMensagem(String mensagem) {
-        this.mensagem = mensagem;
-    }
-
-    public Integer getEnderecoId() {
-        return enderecoId;
-    }
-
-    public void setEnderecoId(Integer enderecoId) {
-        this.enderecoId = enderecoId;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public String getHistorico() {
@@ -67,16 +52,16 @@ public class Agenda implements Modal {
         this.historico = historico;
     }
 
-    public LocalDateTime getHora() {
+    public LocalTime getHora() {
         return hora;
     }
 
-    public void setHora(LocalDateTime hora) {
+    public void setHora(LocalTime hora) {
         this.hora = hora;
     }
 
     @Override
     public Long getId() {
-        return getIdAgenda();
+        return this.id;
     }
 }
