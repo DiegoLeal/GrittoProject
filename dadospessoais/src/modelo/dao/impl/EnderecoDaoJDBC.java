@@ -33,7 +33,7 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 		try {
 			st = conn.prepareStatement(
 					"INSERT INTO endereco "
-					+ "(CEP, CIDADE_ID, BAIRRO_ID, RUA_ID) "
+					+ "(cep, cidade_id, bairro_id, rua_id) "
 					+ "VALUES "
 					+ "(?,?,?,?)",
 					Statement.RETURN_GENERATED_KEYS);
@@ -71,8 +71,8 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 		try {
 			st = conn.prepareStatement(
 					"UPDATE endereco "
-					+ "SET CEP = ?, CIDADE_ID = ?, BAIRRO_ID = ?, RUA_ID = ? "
-					+ "WHERE ID = ?");
+					+ "SET cep = ?, cidade_id = ?, bairro_id = ?, rua_id = ? "
+					+ "WHERE id = ?");
 			
 			st.setString(1, obj.getCep());
 			st.setInt(2, obj.getCidade().getId());
@@ -95,7 +95,7 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 	public void deleteById(Integer id) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement("DELETE FROM endereco WHERE Id = ?");
+			st = conn.prepareStatement("DELETE FROM endereco WHERE id = ?");
 			
 			st.setInt(1, id);
 			
@@ -115,15 +115,15 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT enderco.*,cidade.NOME_CIDADE as CID, "
-					+ "bairro.NOME_BAIRRO as BRO, rua.NOME_RUA as RUA "
+					"SELECT enderco.*,cidade.nome as CID, "
+					+ "bairro.nome as BRO, rua.nome as RUA "
 					+ "FROM endereco INNER JOIN cidade "
-					+ "ON endereco.CIDADE_ID = cidade.ID "
+					+ "ON endereco.cidade_id = cidade.id "
 					+ "INNER JOIN bairro "
-					+ "ON endereco.BAIRRO_ID = bairro.ID "
+					+ "ON endereco.bairro_id = bairro.id "
 					+ "INNER JOIN rua "
-					+ "ON endereco.RUA_ID = rua.ID"
-					+ "WHERE endereco.ID = ?");		
+					+ "ON endereco.rua_id = rua.id"
+					+ "WHERE endereco.id = ?");		
 			st.setInt(1, id);
 			rs = st.executeQuery();	
 			if (rs.next()) {
@@ -150,14 +150,14 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT enderco.*,cidade.NOME_CIDADE as CID, "
-					+ "bairro.NOME_BAIRRO as BRO, rua.NOME_RUA as RUA "
+					"SELECT enderco.*,cidade.nome as CID, "
+					+ "bairro.nome as BRO, rua.nome as RUA "
 					+ "FROM endereco INNER JOIN cidade "
-					+ "ON endereco.CIDADE_ID = cidade.ID "
+					+ "ON endereco.cidade_id = cidade.id "
 					+ "INNER JOIN bairro "
-					+ "ON endereco.BAIRRO_ID = bairro.ID "
+					+ "ON endereco.bairro_id = bairro.id "
 					+ "INNER JOIN rua "
-					+ "ON endereco.RUA_ID = rua.ID "
+					+ "ON endereco.rua_id = rua.id "
 					+ "ORDER BY CID");		
 									
 			rs = st.executeQuery();	
@@ -169,22 +169,22 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 			
 			while (rs.next()) {
 				
-				Cidade cid = cidMap.get(rs.getInt("CIDADE_ID"));
+				Cidade cid = cidMap.get(rs.getInt("cidade_id"));
 				if (cid == null) {
 					cid = instantiateCidade(rs);
-					cidMap.put(rs.getInt("CIDADE_ID"), cid);
+					cidMap.put(rs.getInt("cidade_id"), cid);
 				}
 				
-				Bairro bro = broMap.get(rs.getInt("BAIRRO_ID"));
+				Bairro bro = broMap.get(rs.getInt("bairro_id"));
 				if (bro == null) {
 					bro = instantiateBairro(rs);
-					broMap.put(rs.getInt("BAIRRO_ID"), bro);
+					broMap.put(rs.getInt("bairro_id"), bro);
 				}
 				
-				Rua rua = ruaMap.get(rs.getInt("RUA_ID"));
+				Rua rua = ruaMap.get(rs.getInt("rua_id"));
 				if (rua == null) {
 					rua = instantiateRua(rs);
-					ruaMap.put(rs.getInt("RUA_ID"), rua);
+					ruaMap.put(rs.getInt("rua_id"), rua);
 				}
 				
 				Endereco obj = instantiateEndereco(rs, cid, bro, rua);
@@ -203,28 +203,28 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 	
 	private Cidade instantiateCidade(ResultSet rs) throws SQLException {
 		Cidade cid = new Cidade();
-		cid.setId(rs.getInt("CIDADE_ID"));
+		cid.setId(rs.getInt("cidade_id"));
 		cid.setNome_cidade(rs.getString("CID"));
 		return cid;
 	}
 	
 	private Bairro instantiateBairro(ResultSet rs) throws SQLException {
 		Bairro bro = new Bairro();
-		bro.setId(rs.getInt("BAIRRO_ID"));
+		bro.setId(rs.getInt("bairro_id"));
 		bro.setNome_bairro(rs.getString("BRO"));
 		return bro;
 	}
 	
 	private Rua instantiateRua(ResultSet rs) throws SQLException {
 		Rua rua = new Rua();
-		rua.setId(rs.getInt("RUA_ID"));
+		rua.setId(rs.getInt("rua_id"));
 		rua.setNome_rua(rs.getString("RUA"));
 		return rua;
 	}
 	
 	private Endereco instantiateEndereco(ResultSet rs, Cidade cid, Bairro bro, Rua rua) throws SQLException {
 		Endereco end = new Endereco();
-		end.setCep(rs.getString("CEP"));
+		end.setCep(rs.getString("cep"));
 		end.setCidade(cid);
 		end.setBairro(bro);
 		end.setRua(rua);
