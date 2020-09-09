@@ -26,8 +26,8 @@ public class UniaoFederativaDaoJDBC implements UniaoFederativaDao{
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
-					"INSERT INTO uniao_federativa "
-					+ "(NOME_UF "
+					"INSERT INTO uniaofederativa "
+					+ "(nome "
 					+ "VALUES "
 					+ "(?)",
 					Statement.RETURN_GENERATED_KEYS);
@@ -61,9 +61,9 @@ public class UniaoFederativaDaoJDBC implements UniaoFederativaDao{
 		
 		try {
 			st = conn.prepareStatement(
-					"UPDATE uniao_federativa "
-					+ "SET NOME_UF = ? "
-					+ "WHERE ID = ?");
+					"UPDATE uniaofederativa "
+					+ "SET nome = ? "
+					+ "WHERE id = ?");
 			
 			st.setString(1, obj.getNome_uf());
 			st.setInt(2, obj.getId());
@@ -84,8 +84,8 @@ public class UniaoFederativaDaoJDBC implements UniaoFederativaDao{
 		
 		try {
 			st = conn.prepareStatement(
-					"DELETE FROM uniao_federativa "
-					+ "WHERE ID = ?");
+					"DELETE FROM uniaofederativa "
+					+ "WHERE id = ?");
 			st.setInt(1, id);
 			st.executeUpdate();
 		}
@@ -103,14 +103,14 @@ public class UniaoFederativaDaoJDBC implements UniaoFederativaDao{
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT * FROM uniao_federativa WHERE ID = ?");
+					"SELECT * FROM uniaofederativa WHERE id = ?");
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			
 			if(rs.next()) {
 				UniaoFederativa obj = new UniaoFederativa();
-				obj.setId(rs.getInt("ID"));
-				obj.setNome_uf(rs.getString("NOME_UF"));
+				obj.setId(rs.getInt("id"));
+				obj.setNome_uf(rs.getString("nome"));
 				return obj;
 			}
 			return null;
@@ -130,15 +130,15 @@ public class UniaoFederativaDaoJDBC implements UniaoFederativaDao{
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT FROM uniao_federativa ORDER BY NOME_UF");
+					"SELECT FROM uniaofederativa ORDER BY nome");
 			rs = st.executeQuery();
 			
 			List<UniaoFederativa> list = new ArrayList<>();
 			
 			while (rs.next()) {
 				UniaoFederativa obj = new UniaoFederativa();
-				obj.setId(rs.getInt("ID"));
-				obj.setNome_uf(rs.getString("NOME_UF"));
+				obj.setId(rs.getInt("id"));
+				obj.setNome_uf(rs.getString("nome"));
 				list.add(obj);
 			}
 			return list;

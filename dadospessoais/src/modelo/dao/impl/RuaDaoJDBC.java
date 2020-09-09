@@ -27,7 +27,7 @@ public class RuaDaoJDBC implements RuaDao{
 		try {
 			st = conn.prepareStatement(
 					"INSERT INTO rua "
-					+ "(NOME_RUA "
+					+ "(nome "
 					+ "VALUES "
 					+ "(?)",
 					Statement.RETURN_GENERATED_KEYS);
@@ -62,8 +62,8 @@ public class RuaDaoJDBC implements RuaDao{
 		try {
 			st = conn.prepareStatement(
 					"UPDATE rua "
-					+ "SET NOME_RUA = ? "
-					+ "WHERE ID = ?");
+					+ "SET nome = ? "
+					+ "WHERE id = ?");
 			
 			st.setString(1, obj.getNome_rua());
 			st.setInt(2, obj.getId());
@@ -85,7 +85,7 @@ public class RuaDaoJDBC implements RuaDao{
 		try {
 			st = conn.prepareStatement(
 					"DELETE FROM rua "
-					+ "WHERE ID = ?");
+					+ "WHERE id = ?");
 			st.setInt(1, id);
 			st.executeUpdate();
 		}
@@ -103,14 +103,14 @@ public class RuaDaoJDBC implements RuaDao{
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT * FROM rua WHERE ID = ?");
+					"SELECT * FROM rua WHERE id = ?");
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			
 			if(rs.next()) {
 				Rua obj = new Rua();
-				obj.setId(rs.getInt("ID"));
-				obj.setNome_rua(rs.getString("NOME_RUA"));
+				obj.setId(rs.getInt("id"));
+				obj.setNome_rua(rs.getString("nome"));
 				return obj;
 			}
 			return null;
@@ -130,15 +130,15 @@ public class RuaDaoJDBC implements RuaDao{
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT FROM rua ORDER BY NOME_RUA");
+					"SELECT FROM rua ORDER BY nome");
 			rs = st.executeQuery();
 			
 			List<Rua> list = new ArrayList<>();
 			
 			while (rs.next()) {
 				Rua obj = new Rua();
-				obj.setId(rs.getInt("ID"));
-				obj.setNome_rua(rs.getString("NOME_RUA"));
+				obj.setId(rs.getInt("id"));
+				obj.setNome_rua(rs.getString("nome"));
 				list.add(obj);
 			}
 			return list;
