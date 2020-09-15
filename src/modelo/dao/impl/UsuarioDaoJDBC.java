@@ -50,7 +50,7 @@ public class UsuarioDaoJDBC implements UsuarioDao {
 				if (rs.next()) {
 					int id = rs.getInt(1);
 					obj.setId(id);
-				}	
+				}
 				DB.closeResultSet(rs);
 			}
 			else {
