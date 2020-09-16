@@ -1,11 +1,16 @@
 package modelo.entidades;
 
+import modelo.Size;
+
 import java.io.Serializable;
 
 public class Profissao implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
 	private Integer id;
+
+	@Size(max = 10, message = "Numero maximo de caracteres atindidos")
 	private String nome;
 	
 	public Profissao () {

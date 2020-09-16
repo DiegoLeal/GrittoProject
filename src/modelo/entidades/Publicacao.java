@@ -10,15 +10,15 @@ public class Publicacao implements Modal {
 
     private Usuario usuario;
 
-    private Endereco endereco;
+    private Object endereco;
 
-    private CatServico catServico;
+    private Object catServico;
 
     private Integer numero;
 
     private String complemento;
 
-    public Publicacao(Long id, String descricao, String foto, Usuario usuario, Endereco endereco, CatServico catServico, Integer numero, String complemento) {
+    public Publicacao(Long id, String descricao, String foto, Usuario usuario, Object endereco, Object catServico, Integer numero, String complemento) {
         this.id = id;
         this.descricao = descricao;
         this.foto = foto;
@@ -62,19 +62,19 @@ public class Publicacao implements Modal {
         this.usuario = usuario;
     }
 
-    public Endereco getEndereco() {
+    public Object getEndereco() {
         return endereco;
     }
 
-    public void setEndereco(Endereco endereco) {
+    public void setEndereco(Object endereco) {
         this.endereco = endereco;
     }
 
-    public CatServico getCatServico() {
+    public Object getCatServico() {
         return catServico;
     }
 
-    public void setCatServico(CatServico catServico) {
+    public void setCatServico(Object catServico) {
         this.catServico = catServico;
     }
 
