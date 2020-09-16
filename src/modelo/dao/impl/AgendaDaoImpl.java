@@ -20,21 +20,21 @@ public class AgendaDaoImpl implements AgendaDao {
         this.connection = connection;
     }
 
-    private static String INSERT = "INSERT INTO " +
+    private static final String INSERT = "INSERT INTO " +
             "Agenda(`id`, `data`, `descricao`, `historico`, `hora`) " +
             "VALUES(?, ?, ?, ?, ?) ";
 
-    private static String UPDATE = "UPDATE Agenda " +
+    private static final String UPDATE = "UPDATE Agenda " +
             "SET `data` = ?, `descricao` = ?, `historico` = ?, `hora` = ? " +
             "WHERE `id` = ? ";
 
-    private static String DELETE = "DELETE FROM Agenda WHERE `id` = ?";
+    private static final String DELETE = "DELETE FROM Agenda WHERE `id` = ?";
 
-    private static String SELECT_ONE = "SELECT " +
+    private static final String SELECT_ONE = "SELECT " +
             "`id`, `data`, `decricao`, `historico`, `hora` " +
             "FROM Agenda WHERE `id` = ?";
 
-    private static String SELECT_ALL = "SELECT " +
+    private static final String SELECT_ALL = "SELECT " +
             "`id`, `data`, `mensagem, `historico`, `hora` FROM Agenda ORDER BY id ASC";
 
     @Override
