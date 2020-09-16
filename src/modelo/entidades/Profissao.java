@@ -1,6 +1,6 @@
 package modelo.entidades;
 
-import modelo.Size;
+import db.Size;
 
 import java.io.Serializable;
 
