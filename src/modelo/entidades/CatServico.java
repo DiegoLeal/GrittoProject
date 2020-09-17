@@ -2,17 +2,22 @@ package modelo.entidades;
 
 import java.io.Serializable;
 
-public class Profissao implements Serializable {
+import db.Size;
+
+public class CatServico implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
 	private Integer id;
+	
+	@Size(max = 10, message = "Numero maximo de caracteres atindidos")
 	private String nome;
 	
-	public Profissao () {
+	public CatServico () {
 		
 	}
 
-	public Profissao(Integer id, String nome) {		
+	public CatServico(Integer id, String nome) {		
 		this.id = id;
 		this.nome = nome;
 	}
@@ -49,7 +54,7 @@ public class Profissao implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Profissao other = (Profissao) obj;
+		CatServico other = (CatServico) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -60,6 +65,6 @@ public class Profissao implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Profissao [id=" + id + ", nome=" + nome + "]";
+		return "CatServico [id=" + id + ", nome=" + nome + "]";
 	}	
 }

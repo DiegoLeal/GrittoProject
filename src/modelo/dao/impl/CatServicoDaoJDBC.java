@@ -12,28 +12,28 @@ import java.util.List;
 import db.DB;
 import db.DbException;
 import db.DbIntegrityException;
-import modelo.dao.ProfissaoDao;
-import modelo.entidades.Profissao;
+import modelo.dao.CatServicoDao;
+import modelo.entidades.CatServico;
 
-public class ProfissaoDaoJDBC implements ProfissaoDao {
+public class CatServicoDaoJDBC implements CatServicoDao {
 
 	private Connection conn;
 	
-	public ProfissaoDaoJDBC(Connection conn) {
+	public CatServicoDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
 	
 	@Override
-	public Profissao findById(Integer id) {
+	public CatServico findById(Integer id) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-				"SELECT * FROM profissao WHERE Id = ?");
+				"SELECT * FROM catServico WHERE Id = ?");
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			if (rs.next()) {
-				Profissao obj = new Profissao();
+				CatServico obj = new CatServico();
 				obj.setId(rs.getInt("Id"));
 				obj.setNome(rs.getString("Nome"));
 				return obj;
@@ -50,18 +50,18 @@ public class ProfissaoDaoJDBC implements ProfissaoDao {
 	}
 
 	@Override
-	public List<Profissao> findAll() {
+	public List<CatServico> findAll() {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-				"SELECT * FROM profissao ORDER BY Nome");
+				"SELECT * FROM catServico ORDER BY Nome");
 			rs = st.executeQuery();
 
-			List<Profissao> list = new ArrayList<>();
+			List<CatServico> list = new ArrayList<>();
 
 			while (rs.next()) {
-				Profissao obj = new Profissao();
+				CatServico obj = new CatServico();
 				obj.setId(rs.getInt("Id"));
 				obj.setNome(rs.getString("Nome"));
 				list.add(obj);
@@ -78,11 +78,11 @@ public class ProfissaoDaoJDBC implements ProfissaoDao {
 	}
 
 	@Override
-	public void insert(Profissao obj) {
+	public void insert(CatServico obj) {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
-				"INSERT INTO profissao " 
+				"INSERT INTO catServico " 
 				+ "(Nome) " 
 				+ "VALUES " 
 				+ "(?)",				
@@ -112,11 +112,11 @@ public class ProfissaoDaoJDBC implements ProfissaoDao {
 	}
 
 	@Override
-	public void update(Profissao obj) {
+	public void update(CatServico obj) {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
-				"UPDATE profissao " +
+				"UPDATE catServico " +
 				"SET Nome = ? " +
 				"WHERE Id = ?");
 
@@ -138,7 +138,7 @@ public class ProfissaoDaoJDBC implements ProfissaoDao {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
-				"DELETE FROM profissao WHERE Id = ?");
+				"DELETE FROM catServico WHERE Id = ?");
 
 			st.setInt(1, id);
 

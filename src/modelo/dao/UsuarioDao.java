@@ -2,7 +2,7 @@ package modelo.dao;
 
 import java.util.List;
 
-import modelo.entidades.Profissao;
+import modelo.entidades.CatServico;
 import modelo.entidades.Usuario;
 
 public interface UsuarioDao {
@@ -12,7 +12,7 @@ public interface UsuarioDao {
 	void deleteById(Integer id);
 	Usuario findById(Integer id);
 	List<Usuario> findAll();
-	List<Usuario> findByProfissao(Profissao profissao);
+	List<Usuario> findByCatServico(CatServico catServico);
 	
 	
 	    

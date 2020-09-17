@@ -12,15 +12,16 @@ public class Usuario implements Serializable {
 	private String cpf;
 	private Date dataNascimento;
 	private String telefone;
-	private String sexo;
-	
-	private Profissao profissao;
+	private String senha;
+	private String email;
+	private String sexo;	
+	private CatServico catServico;
 	
 	public Usuario() {		
 	}
 
-	public Usuario(Integer id, String nome, String rg, String cpf, Date dataNascimento, String telefone, String sexo,
-			Profissao profissao) {		
+	public Usuario(Integer id, String nome, String rg, String cpf, Date dataNascimento, String telefone, String senha, String email, String sexo,
+			CatServico catServico) {		
 		this.id = id;
 		this.nome = nome;
 		this.rg = rg;
@@ -28,7 +29,9 @@ public class Usuario implements Serializable {
 		this.dataNascimento = dataNascimento;
 		this.telefone = telefone;
 		this.sexo = sexo;
-		this.profissao = profissao;
+		this.senha = senha;
+		this.email = email;
+		this.catServico = catServico;
 	}
 
 	public Integer getId() {
@@ -78,6 +81,22 @@ public class Usuario implements Serializable {
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
+	
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 	public String getSexo() {
 		return sexo;
@@ -87,12 +106,12 @@ public class Usuario implements Serializable {
 		this.sexo = sexo;
 	}
 
-	public Profissao getProfissao() {
-		return profissao;
+	public CatServico getCatServico() {
+		return catServico;
 	}
 
-	public void setProfissao(Profissao profissao) {
-		this.profissao = profissao;
+	public void setCatServico(CatServico catServico) {
+		this.catServico = catServico;
 	}
 
 	@Override
@@ -123,6 +142,6 @@ public class Usuario implements Serializable {
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", nome=" + nome + ", rg=" + rg + ", cpf=" + cpf + ", dataNascimento="
-				+ dataNascimento + ", telefone=" + telefone + ", sexo=" + sexo + ", profissao=" + profissao + "]";
+				+ dataNascimento + ", telefone=" + telefone + ", senha=" + senha + ", email=" + email + ", sexo=" + sexo + ", profissao=" + catServico + "]";
 	}
 }

@@ -2,7 +2,7 @@ package modelo.dao;
 
 import db.DB;
 
-import modelo.dao.impl.ProfissaoDaoJDBC;
+import modelo.dao.impl.CatServicoDaoJDBC;
 import modelo.dao.impl.UsuarioDaoJDBC;
 
 public class DaoFactory {
@@ -11,7 +11,7 @@ public class DaoFactory {
 		return new UsuarioDaoJDBC(DB.getConnection());
 	}
 
-	public static ProfissaoDao createProfissaoDao() {		
-		return new ProfissaoDaoJDBC(DB.getConnection());
+	public static CatServicoDao createProfissaoDao() {		
+		return new CatServicoDaoJDBC(DB.getConnection());
 	}
 }
