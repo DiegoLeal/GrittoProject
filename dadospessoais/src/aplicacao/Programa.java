@@ -15,7 +15,7 @@ public class Programa {
 		
 		Scanner sc = new Scanner(System.in);
 		
-		//Usuario usuario = new Usuario(7, "Nicole Araújo", "15.378.794-6", "301.734.964-07", new Date(), "(51) 99290-9249", "F", obj);
+		//Usuario usuario = new Usuario(7, "Nicole Araï¿½jo", "15.378.794-6", "301.734.964-07", new Date(), "(51) 99290-9249", "F", obj);
 		
 		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
 		
@@ -23,12 +23,12 @@ public class Programa {
 		Usuario usuario = usuarioDao.findById(3);		
 		System.out.println(usuario);
 		
-		System.out.println("\n=== TEST 2: usuario findByProfissao ===");
-		Profissao profissao = new Profissao(2, null);
-		List<Usuario> list = usuarioDao.findByProfissao(profissao);
-		for (Usuario obj : list) {
-			System.out.println(obj);
-		}
+		//System.out.println("\n=== TEST 2: usuario findByProfissao ===");
+		//Cat profissao = new Profissao(2, null);
+		//List<Usuario> list = usuarioDao.findByProfissao(profissao);
+		//for (Usuario obj : list) {
+		//	System.out.println(obj);
+		//}
 		
 		System.out.println("\n=== TEST 3: usuario findAll ===");		
 		list = usuarioDao.findAll();
