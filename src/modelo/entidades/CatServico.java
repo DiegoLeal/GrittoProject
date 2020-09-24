@@ -1,5 +1,7 @@
 package modelo.entidades;
 
+import db.Size;
+
 import java.io.Serializable;
 
 import db.Size;
@@ -7,9 +9,9 @@ import db.Size;
 public class CatServico implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
-	
+
 	@Size(max = 10, message = "Numero maximo de caracteres atindidos")
 	private String nome;
 	
@@ -17,7 +19,7 @@ public class CatServico implements Serializable {
 		
 	}
 
-	public CatServico(Integer id, String nome) {		
+	public CatServico(Integer id, String nome) {
 		this.id = id;
 		this.nome = nome;
 	}
