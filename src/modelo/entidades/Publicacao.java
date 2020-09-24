@@ -1,5 +1,8 @@
 package modelo.entidades;
 
+/**
+ * @author Jonas
+ */
 public class Publicacao implements Modal {
 
     private Long id;

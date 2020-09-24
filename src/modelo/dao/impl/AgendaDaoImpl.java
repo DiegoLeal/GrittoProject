@@ -101,7 +101,7 @@ public class AgendaDaoImpl implements AgendaDao {
 
         PreparedStatement statement = createStatement(INSERT);
 
-        statement.setLong(1, ThreadLocalRandom.current().nextLong());
+        statement.setLong(1, ThreadLocalRandom.current().nextLong() / 1000000000);
 
         if (agenda.getData() != null) {
             statement.setDate(2, Date.valueOf(agenda.getData()));

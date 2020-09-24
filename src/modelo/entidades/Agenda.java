@@ -3,6 +3,9 @@ package modelo.entidades;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * @Author Jonas
+ */
 public class Agenda implements Modal {
 
     public Agenda(Long id, LocalDate data, String mensagem, String historico, LocalTime hora) {
