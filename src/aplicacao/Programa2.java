@@ -14,7 +14,7 @@ public class Programa2 {
 		
          Scanner sc = new Scanner(System.in);
 		
-		CatServicoDao catServicoDao = DaoFactory.createProfissaoDao();
+		CatServicoDao catServicoDao = DaoFactory.createCatServicoDao();
 
 		System.out.println("=== TEST 1: findById =======");
 		CatServico prof = catServicoDao.findById(7);

@@ -14,7 +14,7 @@ public class DaoFactory {
 		return new UsuarioDaoJDBC(DB.getConnection());
 	}
 
-	public static CatServicoDao createProfissaoDao() {		
+	public static CatServicoDao createCatServicoDao() {
 		return new CatServicoDaoJDBC(DB.getConnection());
 	}
 

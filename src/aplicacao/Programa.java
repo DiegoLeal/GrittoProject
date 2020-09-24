@@ -35,10 +35,10 @@ public class Programa {
 			System.out.println(obj);
 		}	
 		
-		System.out.println("\n=== TEST 4: usuario insert ===");
-		Usuario newUsuario = new Usuario(null, "Thomas", "22.294.720-2", "447.527.438-92", new Date(1952-10-22), "(34) 99226-9815", "M" , profissao);
-		usuarioDao.insert(newUsuario);
-		System.out.println("Inserido com Sucesso! Novo id = " + newUsuario.getId());
+//		System.out.println("\n=== TEST 4: usuario insert ===");
+//		Usuario newUsuario = new Usuario(null, "Thomas", "22.294.720-2", "447.527.438-92", new Date(1952-10-22), "(34) 99226-9815", "M", "", "" , catServico);
+//		usuarioDao.insert(newUsuario);
+//		System.out.println("Inserido com Sucesso! Novo id = " + newUsuario.getId());
 		
 		//System.out.println("\n=== TEST 5: usuario update ===");
 		//usuario = usuarioDao.findById(1);
