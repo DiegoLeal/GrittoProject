@@ -36,7 +36,7 @@ public class Programa {
 		}	
 		
 		System.out.println("\n=== TEST 4: usuario insert ===");
-		Usuario newUsuario = new Usuario(null, "Vitória Silveira", "22.610.093-5", "699.620.573-53", new Date(1966-06-14), "(95) 99245-1738", "3Z0oLGgMiH", "vitorialuziaemilysilveira@skapcom.com", "F", catServico);
+		Usuario newUsuario = new Usuario(null, "Thomas", "22.294.720-2", "447.527.438-92", new Date(1952-10-22), "(34) 99226-9815", "M" , profissao);
 		usuarioDao.insert(newUsuario);
 		System.out.println("Inserido com Sucesso! Novo id = " + newUsuario.getId());
 		

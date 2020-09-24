@@ -150,5 +150,60 @@ public class CatServicoDaoJDBC implements CatServicoDao {
 		finally {
 			DB.closeStatement(st);
 		}
+
+	}
+
+	@Override
+	public Profissao findById(Integer id) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement(
+				"SELECT * FROM profissao WHERE Id = ?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if (rs.next()) {
+				Profissao obj = new Profissao();
+				obj.setId(rs.getInt("Id"));
+				obj.setNome(rs.getString("Nome"));
+				return obj;
+			}
+			return null;
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
+
+	@Override
+	public List<Profissao> findAll() {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement(
+				"SELECT * FROM profissao ORDER BY Nome");
+			rs = st.executeQuery();
+
+			List<Profissao> list = new ArrayList<>();
+
+			while (rs.next()) {
+				Profissao obj = new Profissao();
+				obj.setId(rs.getInt("Id"));
+				obj.setNome(rs.getString("Nome"));
+				list.add(obj);
+			}
+			return list;
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 	}
 }

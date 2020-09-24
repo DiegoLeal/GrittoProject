@@ -2,7 +2,7 @@ package modelo.dao;
 
 import java.util.List;
 
-import modelo.entidades.CatServico;
+import modelo.entidades.Profissao;
 import modelo.entidades.Usuario;
 
 public interface UsuarioDao {
