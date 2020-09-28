@@ -50,7 +50,7 @@ public class EnderecoController {
 		return json;
 	}
 	
-	private JSONObject Create(JSONObject json) throws SQLException, JSONException {
+	public JSONObject Create(JSONObject json) throws SQLException, JSONException {
 		Endereco endereco = jsonToEndereco(json);
 		EnderecoDao dao = DaoFactory.createEnderecoDao();
 		
@@ -59,7 +59,7 @@ public class EnderecoController {
 		return enderecoToJson(endereco);
 	}
 	
-	private JSONObject Show(Integer id) throws SQLException {
+	public JSONObject Show(Integer id) throws SQLException {
 		Endereco endereco = new Endereco();
 		
 		try {
@@ -77,7 +77,7 @@ public class EnderecoController {
 		}
 	}
 	
-	private JSONObject Edit(JSONObject json) throws SQLException {
+	public JSONObject Edit(JSONObject json) throws SQLException {
 		Endereco endereco = jsonToEndereco(json);
 		EnderecoDao dao = DaoFactory.createEnderecoDao();
 		
@@ -86,7 +86,7 @@ public class EnderecoController {
 		return enderecoToJson(endereco);
 	}
 	
-	private JSONArray Index() throws SQLException {
+	public JSONArray Index() throws SQLException {
 		Endereco endereco = new Endereco();
 		EnderecoDao dao = DaoFactory.createEnderecoDao();
 		
@@ -100,7 +100,7 @@ public class EnderecoController {
 		return json;
 	}
 	
-	private JSONObject Delete(Integer id) {
+	public JSONObject Delete(Integer id) {
 		Endereco endereco = new Endereco();
 		EnderecoDao dao = DaoFactory.createEnderecoDao();
 		
