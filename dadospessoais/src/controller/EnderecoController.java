@@ -7,7 +7,6 @@ import org.json.JSONObject;
 
 import modelo.dao.DaoFactory;
 import modelo.dao.EnderecoDao;
-import modelo.dao.impl.EnderecoDaoJDBC;
 import modelo.entidades.Bairro;
 import modelo.entidades.Cidade;
 import modelo.entidades.Endereco;
@@ -54,6 +53,33 @@ public class EnderecoController {
 		EnderecoDao dao = DaoFactory.createEnderecoDao();
 		
 		dao.insert(endereco);
+		
+		return enderecoToJson(endereco);
+	}
+	
+	private JSONObject Show(int id) throws SQLException {
+		Endereco endereco = new Endereco();
+		
+		try {
+			
+			EnderecoDao dao = DaoFactory.createEnderecoDao();
+			dao.findById(id);
+			return enderecoToJson(endereco);
+			
+		} catch (Exception e) {
+			
+			JSONObject json = new JSONObject();
+			json.put("erro", e.getMessage());
+			return json;
+			
+		}
+	}
+	
+	private JSONObject Edit(JSONObject json) throws SQLException {
+		Endereco endereco = jsonToEndereco(json);
+		EnderecoDao dao = DaoFactory.createEnderecoDao();
+		
+		dao.update(endereco);
 		
 		return enderecoToJson(endereco);
 	}
