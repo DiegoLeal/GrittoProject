@@ -1,7 +1,9 @@
 package controller;
 
 import java.sql.SQLException;
+import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,7 +59,7 @@ public class EnderecoController {
 		return enderecoToJson(endereco);
 	}
 	
-	private JSONObject Show(int id) throws SQLException {
+	private JSONObject Show(Integer id) throws SQLException {
 		Endereco endereco = new Endereco();
 		
 		try {
@@ -82,5 +84,34 @@ public class EnderecoController {
 		dao.update(endereco);
 		
 		return enderecoToJson(endereco);
+	}
+	
+	private JSONArray Index() throws SQLException {
+		Endereco endereco = new Endereco();
+		EnderecoDao dao = DaoFactory.createEnderecoDao();
+		
+		List<Endereco> enderecos = dao.findAll();
+		JSONArray json = new JSONArray();
+		
+		enderecos.forEach(endereco_atual -> {
+			json.put(enderecoToJson(endereco_atual));
+		});
+		
+		return json;
+	}
+	
+	private JSONObject Delete(Integer id) {
+		Endereco endereco = new Endereco();
+		EnderecoDao dao = DaoFactory.createEnderecoDao();
+		
+		try {
+			dao.deleteById(id);
+			return enderecoToJson(endereco);
+			
+		} catch (Exception e) {
+			JSONObject json = new JSONObject();
+			json.put("Erro", e.getMessage());
+			return json;
+		}
 	}
 }
