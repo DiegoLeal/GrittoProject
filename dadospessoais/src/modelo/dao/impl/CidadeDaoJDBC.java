@@ -112,7 +112,7 @@ private Connection conn;
 		try {
 			st = conn.prepareStatement(
 					"SELECT cidade.*, uniaofederativa.nome as UF "
-					+ "FROM cidade INNER JOIN uniao_federativa "
+					+ "FROM cidade INNER JOIN uniaofederativa "
 					+ "ON cidade.uf_id = uniaofederativa.id "
 					+ "WHERE cidade.id = ?");
 			st.setInt(1, id);
