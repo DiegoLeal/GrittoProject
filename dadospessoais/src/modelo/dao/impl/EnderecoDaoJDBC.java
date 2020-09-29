@@ -18,6 +18,7 @@ import modelo.entidades.Bairro;
 import modelo.entidades.Cidade;
 import modelo.entidades.Endereco;
 import modelo.entidades.Rua;
+import modelo.entidades.UniaoFederativa;
 
 public class EnderecoDaoJDBC implements EnderecoDao{
 	
@@ -115,19 +116,25 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT enderco.*,cidade.nome as CID, "
-					+ "bairro.nome as BRO, rua.nome as RUA "
+					"SELECT endereco.*,cidade.nome as CID, "
+					+ "bairro.nome as BRO, rua.nome as RUA, "
+					+ "uniaofederativa.nome as UF, uniaofederativa.id "
 					+ "FROM endereco INNER JOIN cidade "
 					+ "ON endereco.cidade_id = cidade.id "
+					+ "INNER JOIN uniaofederativa "
+					+ "ON cidade.uf_id = uniaofederativa.id "
 					+ "INNER JOIN bairro "
 					+ "ON endereco.bairro_id = bairro.id "
 					+ "INNER JOIN rua "
-					+ "ON endereco.rua_id = rua.id"
+					+ "ON endereco.rua_id = rua.id "
 					+ "WHERE endereco.id = ?");		
 			st.setInt(1, id);
+			
 			rs = st.executeQuery();	
+			
 			if (rs.next()) {
-				Cidade cid = instantiateCidade(rs);
+				UniaoFederativa uf = instantiateUf(rs);
+				Cidade cid = instantiateCidade(rs, uf);				
 				Bairro bro = instantiateBairro(rs);
 				Rua rua = instantiateRua(rs);
 				Endereco obj = instantiateEndereco(rs,cid, bro, rua);
@@ -150,10 +157,13 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT enderco.*,cidade.nome as CID, "
-					+ "bairro.nome as BRO, rua.nome as RUA "
+					"SELECT endereco.id,cidade.nome as CID, "
+					+ "bairro.nome as BRO, rua.nome as RUA, "
+					+ "uniaofederativa.nome as UF, uniaofederativa.id "
 					+ "FROM endereco INNER JOIN cidade "
 					+ "ON endereco.cidade_id = cidade.id "
+					+ "INNER JOIN uniaofederativa "
+					+ "ON cidade.uf_id = uniaofederativa.id "
 					+ "INNER JOIN bairro "
 					+ "ON endereco.bairro_id = bairro.id "
 					+ "INNER JOIN rua "
@@ -166,12 +176,19 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 			Map<Integer, Cidade> cidMap = new HashMap<>();
 			Map<Integer, Bairro> broMap = new HashMap<>();
 			Map<Integer, Rua> ruaMap = new HashMap<>();
+			Map<Integer, UniaoFederativa> ufMap = new HashMap<>();
 			
 			while (rs.next()) {
 				
+				UniaoFederativa uf = ufMap.get(rs.getInt("id"));
+				if (uf == null) {
+					uf = instantiateUf(rs);
+					ufMap.put(rs.getInt("id"), uf);
+				}
+				
 				Cidade cid = cidMap.get(rs.getInt("cidade_id"));
 				if (cid == null) {
-					cid = instantiateCidade(rs);
+					cid = instantiateCidade(rs, uf);
 					cidMap.put(rs.getInt("cidade_id"), cid);
 				}
 				
@@ -201,10 +218,19 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 		}
 	}
 	
-	private Cidade instantiateCidade(ResultSet rs) throws SQLException {
+	private UniaoFederativa instantiateUf(ResultSet rs) throws SQLException {
+		UniaoFederativa uf = new UniaoFederativa();
+		uf.setId(rs.getInt("id"));
+		uf.setNome_uf(rs.getString("UF"));
+		return uf;
+	}
+
+	private Cidade instantiateCidade(ResultSet rs, UniaoFederativa uf) throws SQLException {
 		Cidade cid = new Cidade();
 		cid.setId(rs.getInt("cidade_id"));
 		cid.setNome_cidade(rs.getString("CID"));
+		uf.setId(rs.getInt("id"));
+		cid.setUf(uf);
 		return cid;
 	}
 	
@@ -224,6 +250,7 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 	
 	private Endereco instantiateEndereco(ResultSet rs, Cidade cid, Bairro bro, Rua rua) throws SQLException {
 		Endereco end = new Endereco();
+		end.setId(rs.getInt("id"));
 		end.setCep(rs.getString("cep"));
 		end.setCidade(cid);
 		end.setBairro(bro);

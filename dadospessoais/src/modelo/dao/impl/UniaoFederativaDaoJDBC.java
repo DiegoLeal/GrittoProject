@@ -27,7 +27,7 @@ public class UniaoFederativaDaoJDBC implements UniaoFederativaDao{
 		try {
 			st = conn.prepareStatement(
 					"INSERT INTO uniaofederativa "
-					+ "(nome "
+					+ "(nome) "
 					+ "VALUES "
 					+ "(?)",
 					Statement.RETURN_GENERATED_KEYS);
@@ -130,7 +130,7 @@ public class UniaoFederativaDaoJDBC implements UniaoFederativaDao{
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT FROM uniaofederativa ORDER BY nome");
+					"SELECT * FROM uniaofederativa ORDER BY nome");
 			rs = st.executeQuery();
 			
 			List<UniaoFederativa> list = new ArrayList<>();

@@ -28,7 +28,7 @@ public class BairroDaoJDBC implements BairroDao{
 		try {
 			st = conn.prepareStatement(
 					"INSERT INTO bairro "
-					+ "(nome "
+					+ "(nome) "
 					+ "VALUES "
 					+ "(?)",
 					Statement.RETURN_GENERATED_KEYS);

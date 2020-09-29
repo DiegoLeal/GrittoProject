@@ -31,7 +31,7 @@ private Connection conn;
 		try {
 			st = conn.prepareStatement(
 					"INSERT INTO cidade "
-					+ "(nome, uf_id "
+					+ "(nome, uf_id) "
 					+ "VALUES "
 					+ "(?,?)",
 					Statement.RETURN_GENERATED_KEYS);
