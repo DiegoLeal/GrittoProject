@@ -157,7 +157,7 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT endereco.id,cidade.nome as CID, "
+					"SELECT endereco.*,cidade.nome as CID, "
 					+ "bairro.nome as BRO, rua.nome as RUA, "
 					+ "uniaofederativa.nome as UF, uniaofederativa.id "
 					+ "FROM endereco INNER JOIN cidade "
