@@ -43,10 +43,15 @@ public class EnderecoController {
 		
 		json.put("id", endereco.getId());
 		json.put("cidade_id", endereco.getCidade().getId());
+		json.put("cid_nome", endereco.getCidade().getNome_cidade());
+		json.put("uf_id", endereco.getCidade().getUf().getId());
+		json.put("uf_nome", endereco.getCidade().getUf().getNome_uf());
 		json.put("bairro_id", endereco.getBairro().getId());
+		json.put("bairro_nome", endereco.getBairro().getNome_bairro());
 		json.put("rua_id", endereco.getRua().getId());
+		json.put("rua_nome", endereco.getRua().getNome_rua());
 		json.put("cep", endereco.getCep());
-		
+				
 		return json;
 	}
 	
@@ -65,7 +70,7 @@ public class EnderecoController {
 		try {
 			
 			EnderecoDao dao = DaoFactory.createEnderecoDao();
-			dao.findById(id);
+			endereco = dao.findById(id);
 			return enderecoToJson(endereco);
 			
 		} catch (Exception e) {
