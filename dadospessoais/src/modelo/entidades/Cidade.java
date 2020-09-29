@@ -71,7 +71,7 @@ public class Cidade implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Cidade [id=" + id + ", nome=" + nome_cidade + ", uf=" + uf + "]";
+		return "Cidade [id=" + id + ", nome=" + nome_cidade + ", uf=" + uf.getNome_uf() + "]";
 	}
 	
 }

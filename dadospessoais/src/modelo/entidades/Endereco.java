@@ -90,7 +90,6 @@ public class Endereco implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Endereco [id=" + id + ", cep=" + cep + ", cidade=" + cidade + ", rua=" + rua + ", bairro=" + bairro
-				+ "]";
+		return "Endereco [" + id + ", " + cep + "," + cidade.getNome_cidade() + "," + rua.getNome_rua() + "," + bairro.getNome_bairro() + "]";
 	}
 }
