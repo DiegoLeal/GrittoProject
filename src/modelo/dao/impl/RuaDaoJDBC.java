@@ -27,7 +27,7 @@ public class RuaDaoJDBC implements RuaDao{
 		try {
 			st = conn.prepareStatement(
 					"INSERT INTO rua "
-					+ "(nome "
+					+ "(nome) "
 					+ "VALUES "
 					+ "(?)",
 					Statement.RETURN_GENERATED_KEYS);
