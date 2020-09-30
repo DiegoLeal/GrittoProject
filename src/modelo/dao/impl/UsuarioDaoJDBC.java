@@ -13,7 +13,7 @@ import java.util.Map;
 import db.DB;
 import db.DbException;
 import modelo.dao.UsuarioDao;
-import modelo.entidades.Profissao;
+import modelo.entidades.CatServico;
 import modelo.entidades.Usuario;
 
 public class UsuarioDaoJDBC implements UsuarioDao {
@@ -30,9 +30,9 @@ public class UsuarioDaoJDBC implements UsuarioDao {
 		try {
 			st = conn.prepareStatement(
 					"INSERT INTO usuario "
-					+ "(Nome, Rg, Cpf, DataNascimento, Telefone, Sexo, ProfissaoId) "
+					+ "(Nome, Rg, Cpf, DataNascimento, Telefone, Senha, Email, Sexo, CatServicoId) "
 					+ "VALUES "
-					+ "(?, ?, ?, ?, ?, ?, ?)",
+					+ "(?, ?, ?, ?, ?, ?, ?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 			
 			st.setString(1, obj.getNome());
@@ -40,8 +40,10 @@ public class UsuarioDaoJDBC implements UsuarioDao {
 			st.setString(3, obj.getCpf());
 			st.setDate(4, new java.sql.Date(obj.getDataNascimento().getTime()));
 			st.setString(5, obj.getTelefone());
-			st.setString(6, obj.getSexo());
-			st.setInt(7, obj.getProfissao().getId());
+			st.setString(6, obj.getSenha());
+			st.setString(7, obj.getEmail());
+			st.setString(8, obj.getSexo());
+			st.setInt(9, obj.getCatServico().getId());
 			
 			int rowsAffected = st.executeUpdate();
 			
@@ -50,7 +52,7 @@ public class UsuarioDaoJDBC implements UsuarioDao {
 				if (rs.next()) {
 					int id = rs.getInt(1);
 					obj.setId(id);
-				}	
+				}
 				DB.closeResultSet(rs);
 			}
 			else {
@@ -71,7 +73,7 @@ public class UsuarioDaoJDBC implements UsuarioDao {
 		try {
 			st = conn.prepareStatement(
 					"UPDATE usuario "
-					+ "SET Nome = ?, Rg = ?, Cpf = ?, DataNascimento = ?, Telefone = ?, Sexo = ?, ProfissaoId = ? "
+					+ "SET Nome = ?, Rg = ?, Cpf = ?, DataNascimento = ?, Telefone = ?, Senha = ?, Email = ?, Sexo = ?, CatServico = ? "
 					+ "WHERE Id = ?");
 					
 			
@@ -80,9 +82,11 @@ public class UsuarioDaoJDBC implements UsuarioDao {
 			st.setString(3, obj.getCpf());
 			st.setDate(4, new java.sql.Date(obj.getDataNascimento().getTime()));
 			st.setString(5, obj.getTelefone());
-			st.setString(6, obj.getSexo());
-			st.setInt(7, obj.getProfissao().getId());
-			st.setInt(8, obj.getId());
+			st.setString(6, obj.getSenha());
+			st.setString(7, obj.getEmail());
+			st.setString(8, obj.getSexo());
+			st.setInt(9, obj.getCatServico().getId());
+			st.setInt(10, obj.getId());
 			
 			st.executeUpdate();					
 	    }
@@ -118,23 +122,23 @@ public class UsuarioDaoJDBC implements UsuarioDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT usuario.*,profissao.Nome as ProfNome "  
-					+ "FROM usuario INNER JOIN profissao "  
-					+ "ON usuario.ProfissaoId = profissao.Id "					
-					+ "ORDER BY Nome");		
+					"SELECT usuario.*,catservico.Nome as ProfNome "  
+					+ "FROM usuario INNER JOIN catservico "  
+					+ "ON usuario.CatServicoId = catservico.Id "					
+					+ "ORDER BY Nome");	
 									
 			rs = st.executeQuery();	
 			
 			List<Usuario> list = new ArrayList<>();
-			Map<Integer, Profissao> map = new HashMap<>();
+			Map<Integer, CatServico> map = new HashMap<>();
 			
 			while (rs.next()) {
 				
-				Profissao prof = map.get(rs.getInt("ProfissaoId"));
+				CatServico prof = map.get(rs.getInt("CatServico"));
 				
 				if (prof == null) {
-					prof = instantiateProfissao(rs);
-					map.put(rs.getInt("ProfissaoId"), prof);
+					prof = instantiateCatServico(rs);
+					map.put(rs.getInt("CatServico"), prof);
 				}				
 				
 				Usuario obj = instantiateUsuario(rs, prof);
@@ -157,14 +161,14 @@ public class UsuarioDaoJDBC implements UsuarioDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT usuario.*,profissao.Nome as ProfNome "
-					+ "FROM usuario INNER JOIN profissao "
-					+ "ON usuario.ProfissaoId = profissao.Id "
-					+ "WHERE usuario.Id = ?");		
+					"SELECT usuario.*,catservico.Nome as ProfNome "
+					+ "FROM usuario INNER JOIN catservico "
+					+ "ON usuario.CatServicoId = catservico.Id "
+					+ "WHERE usuario.Id = ?");
 			st.setInt(1, id);
 			rs = st.executeQuery();	
 			if (rs.next()) {
-				Profissao prof = instantiateProfissao(rs);
+				CatServico prof = instantiateCatServico(rs);
 				Usuario obj = instantiateUsuario(rs,prof);
 				return obj;
 			}
@@ -179,7 +183,7 @@ public class UsuarioDaoJDBC implements UsuarioDao {
 		}
 	}
 
-	private Usuario instantiateUsuario(ResultSet rs, Profissao prof) throws SQLException {
+	private Usuario instantiateUsuario(ResultSet rs, CatServico prof) throws SQLException {
 		Usuario obj = new Usuario();
 		obj.setId(rs.getInt("Id"));
 		obj.setNome(rs.getString("Nome"));
@@ -187,44 +191,46 @@ public class UsuarioDaoJDBC implements UsuarioDao {
 		obj.setCpf(rs.getString("Cpf"));
 		obj.setDataNascimento(rs.getDate("DataNascimento"));
 		obj.setTelefone(rs.getString("Telefone"));
+		obj.setSenha(rs.getString("Senha"));
+		obj.setEmail(rs.getString("Email"));
 		obj.setSexo(rs.getString("Sexo"));
-		obj.setProfissao(prof);
+		obj.setCatServico(prof);
 		return obj;
 	}	
 
-	private Profissao instantiateProfissao(ResultSet rs) throws SQLException {
-		Profissao prof = new Profissao();
-		prof.setId(rs.getInt("ProfissaoId"));
+	private CatServico instantiateCatServico(ResultSet rs) throws SQLException {
+		CatServico prof = new CatServico();
+		prof.setId(rs.getInt("CatServico"));
 		prof.setNome(rs.getString("ProfNome"));
 		return prof;
 	}
 
 	@Override
-	public List<Usuario> findByProfissao(Profissao profissao) {
+	public List<Usuario> findByCatServico(CatServico catServico) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT usuario.*,profissao.Nome as ProfNome "  
-					+ "FROM usuario INNER JOIN profissao "  
-					+ "ON usuario.ProfissaoId = profissao.Id "
-					+ "WHERE ProfissaoId = ? "
-					+ "ORDER BY Nome");		
+					"SELECT usuario.*,catservico.Nome as ProfNome "  
+					+ "FROM usuario INNER JOIN catservico "  
+					+ "ON usuario.CatServicoId = catservico.Id "
+					+ "WHERE CatServicoId = ? "
+					+ "ORDER BY Nome");			
 			
-			st.setInt(1, profissao.getId());
+			st.setInt(1, catServico.getId());
 			
 			rs = st.executeQuery();	
 			
 			List<Usuario> list = new ArrayList<>();
-			Map<Integer, Profissao> map = new HashMap<>();
+			Map<Integer, CatServico> map = new HashMap<>();
 			
 			while (rs.next()) {
 				
-				Profissao prof = map.get(rs.getInt("ProfissaoId"));
+				CatServico prof = map.get(rs.getInt("CatServico"));
 				
 				if (prof == null) {
-					prof = instantiateProfissao(rs);
-					map.put(rs.getInt("ProfissaoId"), prof);
+					prof = instantiateCatServico(rs);
+					map.put(rs.getInt("CatServico"), prof);
 				}				
 				
 				Usuario obj = instantiateUsuario(rs, prof);
