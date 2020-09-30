@@ -9,8 +9,6 @@ import java.util.logging.Logger;
 
 import com.sun.net.httpserver.HttpServer;
 
-import main.Main;
-
 public class Main {
 
 	public static void main(String[] args) {
@@ -20,12 +18,11 @@ public class Main {
             server.createContext("/enderecos", new EnderecoHttpHandler());
             server.setExecutor(threadPoolExecutor);
             server.start();
-            Logger.getLogger(" Server started on port 8001");
+            Logger.getLogger("Server started on port 8001");
 
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
 }
