@@ -20,10 +20,10 @@ import modelo.entidades.Endereco;
 import modelo.entidades.Rua;
 import modelo.entidades.UniaoFederativa;
 
-public class EnderecoDaoJDBC implements EnderecoDao{
-	
+public class EnderecoDaoJDBC implements EnderecoDao {
+
 	private Connection conn;
-	
+
 	public EnderecoDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
@@ -33,19 +33,16 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
-					"INSERT INTO endereco "
-					+ "(cep, cidade_id, bairro_id, rua_id) "
-					+ "VALUES "
-					+ "(?,?,?,?)",
+					"INSERT INTO endereco " + "(cep, cidade_id, bairro_id, rua_id) " + "VALUES " + "(?,?,?,?)",
 					Statement.RETURN_GENERATED_KEYS);
-			
+
 			st.setString(1, obj.getCep());
 			st.setInt(2, obj.getCidade().getId());
 			st.setInt(3, obj.getBairro().getId());
 			st.setInt(4, obj.getRua().getId());
-			
+
 			int rowsAffected = st.executeUpdate();
-			
+
 			if (rowsAffected > 0) {
 				ResultSet rs = st.getGeneratedKeys();
 				if (rs.next()) {
@@ -53,17 +50,14 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 					obj.setId(id);
 				}
 				DB.closeResultSet(rs);
-			}
-			else {
+			} else {
 				throw new DbException("Erro inesperado! Nenhuma linha afetada");
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
-		}	
+		}
 	}
 
 	@Override
@@ -71,25 +65,21 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
-					"UPDATE endereco "
-					+ "SET cep = ?, cidade_id = ?, bairro_id = ?, rua_id = ? "
-					+ "WHERE id = ?");
-			
+					"UPDATE endereco " + "SET cep = ?, cidade_id = ?, bairro_id = ?, rua_id = ? " + "WHERE id = ?");
+
 			st.setString(1, obj.getCep());
 			st.setInt(2, obj.getCidade().getId());
 			st.setInt(3, obj.getBairro().getId());
 			st.setInt(4, obj.getRua().getId());
 			st.setInt(5, obj.getId());
-			
-			st.executeUpdate();	
-		}
-		catch (SQLException e) {
+
+			st.executeUpdate();
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 		}
-		
+
 	}
 
 	@Override
@@ -97,17 +87,15 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement("DELETE FROM endereco WHERE id = ?");
-			
+
 			st.setInt(1, id);
-			
+
 			st.executeUpdate();
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
 		}
-		finally {
-			DB.closeStatement(st); 
-		}		
 	}
 
 	@Override
@@ -115,37 +103,36 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement(
-					"SELECT endereco.*,cidade.nome as CID, "
-					+ "bairro.nome as BRO, rua.nome as RUA, "
-					+ "uniaofederativa.nome as UF, uniaofederativa.id "
-					+ "FROM endereco INNER JOIN cidade "
-					+ "ON endereco.cidade_id = cidade.id "
-					+ "INNER JOIN uniaofederativa "
-					+ "ON cidade.uf_id = uniaofederativa.id "
-					+ "INNER JOIN bairro "
-					+ "ON endereco.bairro_id = bairro.id "
-					+ "INNER JOIN rua "
-					+ "ON endereco.rua_id = rua.id "
-					+ "WHERE endereco.id = ?");		
+			st = conn.prepareStatement("SELECT endereco.id, rua.nome as RUA, endereco.rua_id as RUA_ID, "
+										+ "bairro.nome as BAIRRO, endereco.bairro_id as BAIRRO_ID, "
+										+ "cidade.nome as CIDADE, endereco.cidade_id as CIDADE_ID, "
+										+ "uniaofederativa.nome as UF, uniaofederativa.id as UF_ID, "
+										+ "endereco.cep as CEP "
+										+ "FROM endereco INNER JOIN cidade "
+										+ "ON endereco.cidade_id = cidade.id "
+										+ "INNER JOIN uniaofederativa "
+										+ "ON cidade.uf_id = uniaofederativa.id "
+										+ "INNER JOIN bairro "
+										+ "ON endereco.bairro_id = bairro.id "
+										+ "INNER JOIN rua "
+										+ "on endereco.rua_id = rua.id "
+										+ "WHERE endereco.id = ?;");
 			st.setInt(1, id);
-			
-			rs = st.executeQuery();	
-			
+
+			rs = st.executeQuery();
+
 			if (rs.next()) {
 				UniaoFederativa uf = instantiateUf(rs);
-				Cidade cid = instantiateCidade(rs, uf);				
+				Cidade cid = instantiateCidade(rs, uf);
 				Bairro bro = instantiateBairro(rs);
 				Rua rua = instantiateRua(rs);
-				Endereco obj = instantiateEndereco(rs,cid, bro, rua);
+				Endereco obj = instantiateEndereco(rs, cid, bro, rua);
 				return obj;
 			}
 			return null;
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
@@ -156,102 +143,93 @@ public class EnderecoDaoJDBC implements EnderecoDao{
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement(
-					"SELECT endereco.*,cidade.nome as CID, "
-					+ "bairro.nome as BRO, rua.nome as RUA, "
-					+ "uniaofederativa.nome as UF, uniaofederativa.id "
-					+ "FROM endereco INNER JOIN cidade "
-					+ "ON endereco.cidade_id = cidade.id "
-					+ "INNER JOIN uniaofederativa "
-					+ "ON cidade.uf_id = uniaofederativa.id "
-					+ "INNER JOIN bairro "
-					+ "ON endereco.bairro_id = bairro.id "
-					+ "INNER JOIN rua "
-					+ "ON endereco.rua_id = rua.id "
-					+ "ORDER BY CID");		
-									
-			rs = st.executeQuery();	
-			
+			st = conn.prepareStatement("SELECT endereco.*,cidade.nome as CID, "
+					+ "bairro.nome as BRO, rua.nome as RUA, " + "uniaofederativa.nome as UF, uniaofederativa.id "
+					+ "FROM endereco INNER JOIN cidade " + "ON endereco.cidade_id = cidade.id "
+					+ "INNER JOIN uniaofederativa " + "ON cidade.uf_id = uniaofederativa.id " + "INNER JOIN bairro "
+					+ "ON endereco.bairro_id = bairro.id " + "INNER JOIN rua " + "ON endereco.rua_id = rua.id "
+					+ "ORDER BY CID");
+
+			rs = st.executeQuery();
+
 			List<Endereco> list = new ArrayList<>();
 			Map<Integer, Cidade> cidMap = new HashMap<>();
 			Map<Integer, Bairro> broMap = new HashMap<>();
 			Map<Integer, Rua> ruaMap = new HashMap<>();
 			Map<Integer, UniaoFederativa> ufMap = new HashMap<>();
-			
+
 			while (rs.next()) {
-				
+
 				UniaoFederativa uf = ufMap.get(rs.getInt("id"));
 				if (uf == null) {
 					uf = instantiateUf(rs);
 					ufMap.put(rs.getInt("id"), uf);
 				}
-				
+
 				Cidade cid = cidMap.get(rs.getInt("cidade_id"));
 				if (cid == null) {
 					cid = instantiateCidade(rs, uf);
 					cidMap.put(rs.getInt("cidade_id"), cid);
 				}
-				
+
 				Bairro bro = broMap.get(rs.getInt("bairro_id"));
 				if (bro == null) {
 					bro = instantiateBairro(rs);
 					broMap.put(rs.getInt("bairro_id"), bro);
 				}
-				
+
 				Rua rua = ruaMap.get(rs.getInt("rua_id"));
 				if (rua == null) {
 					rua = instantiateRua(rs);
 					ruaMap.put(rs.getInt("rua_id"), rua);
 				}
-				
+
 				Endereco obj = instantiateEndereco(rs, cid, bro, rua);
-				list.add(obj); 
+				list.add(obj);
 			}
 			return list;
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
 	}
-	
+
 	private UniaoFederativa instantiateUf(ResultSet rs) throws SQLException {
 		UniaoFederativa uf = new UniaoFederativa();
-		uf.setId(rs.getInt("id"));
+		uf.setId(rs.getInt("UF_ID"));
 		uf.setNome_uf(rs.getString("UF"));
 		return uf;
 	}
 
 	private Cidade instantiateCidade(ResultSet rs, UniaoFederativa uf) throws SQLException {
 		Cidade cid = new Cidade();
-		cid.setId(rs.getInt("cidade_id"));
-		cid.setNome_cidade(rs.getString("CID"));
-		uf.setId(rs.getInt("id"));
+		cid.setId(rs.getInt("CIDADE_ID"));
+		cid.setNome_cidade(rs.getString("CIDADE"));
+		uf.setId(rs.getInt("UF_ID"));
 		cid.setUf(uf);
 		return cid;
 	}
-	
+
 	private Bairro instantiateBairro(ResultSet rs) throws SQLException {
 		Bairro bro = new Bairro();
-		bro.setId(rs.getInt("bairro_id"));
-		bro.setNome_bairro(rs.getString("BRO"));
+		bro.setId(rs.getInt("BAIRRO_ID"));
+		bro.setNome_bairro(rs.getString("BAIRRO"));
 		return bro;
 	}
-	
+
 	private Rua instantiateRua(ResultSet rs) throws SQLException {
 		Rua rua = new Rua();
-		rua.setId(rs.getInt("rua_id"));
+		rua.setId(rs.getInt("RUA_ID"));
 		rua.setNome_rua(rs.getString("RUA"));
 		return rua;
 	}
-	
+
 	private Endereco instantiateEndereco(ResultSet rs, Cidade cid, Bairro bro, Rua rua) throws SQLException {
 		Endereco end = new Endereco();
 		end.setId(rs.getInt("id"));
-		end.setCep(rs.getString("cep"));
+		end.setCep(rs.getString("CEP"));
 		end.setCidade(cid);
 		end.setBairro(bro);
 		end.setRua(rua);

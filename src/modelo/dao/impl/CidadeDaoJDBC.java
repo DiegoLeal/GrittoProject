@@ -18,9 +18,9 @@ import modelo.entidades.Cidade;
 import modelo.entidades.UniaoFederativa;
 
 public class CidadeDaoJDBC implements CidadeDao {
-	
-private Connection conn;
-	
+
+	private Connection conn;
+
 	public CidadeDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
@@ -29,33 +29,26 @@ private Connection conn;
 	public void insert(Cidade obj) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement(
-					"INSERT INTO cidade "
-					+ "(nome, uf_id) "
-					+ "VALUES "
-					+ "(?,?)",
+			st = conn.prepareStatement("INSERT INTO cidade " + "(nome, uf_id) " + "VALUES " + "(?,?)",
 					Statement.RETURN_GENERATED_KEYS);
-			
+
 			st.setString(1, obj.getNome_cidade());
 			st.setInt(2, obj.getUf().getId());
-			
+
 			int rowsAffected = st.executeUpdate();
-			
+
 			if (rowsAffected > 0) {
 				ResultSet rs = st.getGeneratedKeys();
 				if (rs.next()) {
 					int id = rs.getInt(1);
 					obj.setId(id);
 				}
-			}
-			else {
+			} else {
 				throw new DbException("Erro inesperado! Nenhuma linha afetada!");
 			}
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 		}
 	}
@@ -63,46 +56,37 @@ private Connection conn;
 	@Override
 	public void update(Cidade obj) {
 		PreparedStatement st = null;
-		
+
 		try {
-			st = conn.prepareStatement(
-					"UPDATE cidade "
-					+ "SET nome = ?, uf_id = ? "
-					+ "WHERE id = ?");
-			
+			st = conn.prepareStatement("UPDATE cidade " + "SET nome = ?, uf_id = ? " + "WHERE id = ?");
+
 			st.setString(1, obj.getNome_cidade());
 			st.setInt(2, obj.getUf().getId());
 			st.setInt(3, obj.getId());
-			
+
 			st.executeUpdate();
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 		}
-		
+
 	}
 
 	@Override
 	public void deleteById(Integer id) {
 		PreparedStatement st = null;
-		
+
 		try {
-			st = conn.prepareStatement(
-					"DELETE FROM cidade "
-					+ "WHERE id = ?");
+			st = conn.prepareStatement("DELETE FROM cidade " + "WHERE id = ?");
 			st.setInt(1, id);
 			st.executeUpdate();
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 		}
-		
+
 	}
 
 	@Override
@@ -111,24 +95,20 @@ private Connection conn;
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT cidade.*, uniaofederativa.nome as UF "
-					+ "FROM cidade INNER JOIN uniaofederativa "
-					+ "ON cidade.uf_id = uniaofederativa.id "
-					+ "WHERE cidade.id = ?");
+					"SELECT cidade.*, uniaofederativa.nome as UF " + "FROM cidade INNER JOIN uniaofederativa "
+							+ "ON cidade.uf_id = uniaofederativa.id " + "WHERE cidade.id = ?");
 			st.setInt(1, id);
 			rs = st.executeQuery();
-			
-			if(rs.next()) {
+
+			if (rs.next()) {
 				UniaoFederativa uf = instatiateUniaoFederativa(rs);
 				Cidade obj = instantiateCidade(rs, uf);
 				return obj;
 			}
 			return null;
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
@@ -140,84 +120,75 @@ private Connection conn;
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT cidade.*, uniaofederativa.nome as UF "
-					+ "FROM cidade INNER JOIN uniaofederativa "
-					+ "ON cidade.uf_id = uniaofederativa.id "
-					+ "ORDER BY nome");
-			
+					"SELECT cidade.*, uniaofederativa.nome as UF " + "FROM cidade INNER JOIN uniaofederativa "
+							+ "ON cidade.uf_id = uniaofederativa.id " + "ORDER BY nome");
+
 			rs = st.executeQuery();
-			
+
 			List<Cidade> list = new ArrayList<>();
 			Map<Integer, UniaoFederativa> map = new HashMap<>();
-			
-			while(rs.next()) {
+
+			while (rs.next()) {
 				UniaoFederativa uf = map.get(rs.getInt("uf_id"));
-				
+
 				if (uf == null) {
 					uf = instatiateUniaoFederativa(rs);
-					map.put(rs.getInt("uf_id"), uf);					
+					map.put(rs.getInt("uf_id"), uf);
 				}
-				
+
 				Cidade obj = instantiateCidade(rs, uf);
 				list.add(obj);
 			}
 			return list;
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
-		}		
+		}
 	}
-	
+
 	public List<Cidade> findByUf(UniaoFederativa uf) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT cidade.*, uniaofederativa.nome as UF "
-					+ "FROM cidade INNER JOIN uniaofederativa "
-					+ "ON cidade.uf_id = uniaofederativa.id "
-					+ "WHERE uf_id = ?"
-					+ "ORDER BY nome");
+					"SELECT cidade.*, uniaofederativa.nome as UF " + "FROM cidade INNER JOIN uniaofederativa "
+							+ "ON cidade.uf_id = uniaofederativa.id " + "WHERE uf_id = ?" + "ORDER BY nome");
 			st.setInt(1, uf.getId());
-			
+
 			rs = st.executeQuery();
-			
+
 			List<Cidade> list = new ArrayList<>();
 			Map<Integer, UniaoFederativa> map = new HashMap<>();
-			
-			while(rs.next()) {
+
+			while (rs.next()) {
 				UniaoFederativa uniao = map.get(rs.getInt("uf_id"));
-				
+
 				if (uniao == null) {
 					uniao = instatiateUniaoFederativa(rs);
-					map.put(rs.getInt("uf_id"), uniao);					
+					map.put(rs.getInt("uf_id"), uniao);
 				}
-				
+
 				Cidade obj = instantiateCidade(rs, uniao);
 				list.add(obj);
 			}
 			return list;
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
-		}		
+		}
 	}
-	
-	private UniaoFederativa instatiateUniaoFederativa(ResultSet rs) throws SQLException{
+
+	private UniaoFederativa instatiateUniaoFederativa(ResultSet rs) throws SQLException {
 		UniaoFederativa uf = new UniaoFederativa();
 		uf.setId(rs.getInt("uf_id"));
 		uf.setNome_uf(rs.getString("UF"));
 		return uf;
 	}
-	
+
 	private Cidade instantiateCidade(ResultSet rs, UniaoFederativa uf) throws SQLException {
 		Cidade obj = new Cidade();
 		obj.setId(rs.getInt("id"));

@@ -1,10 +1,10 @@
 package modelo.entidades;
 
 public class Rua {
-	
+
 	private Integer id;
 	private String nome_rua;
-	
+
 	public Rua() {
 	}
 
@@ -59,5 +59,5 @@ public class Rua {
 	public String toString() {
 		return "Rua [id=" + id + ", nome_rua=" + nome_rua + "]";
 	}
-	
+
 }

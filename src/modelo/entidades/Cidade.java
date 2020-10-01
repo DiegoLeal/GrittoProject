@@ -2,14 +2,14 @@ package modelo.entidades;
 
 import java.io.Serializable;
 
-public class Cidade implements Serializable{
+public class Cidade implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
 	private String nome_cidade;
 	private UniaoFederativa uf;
-	
+
 	public Cidade() {
 	}
 
@@ -73,5 +73,5 @@ public class Cidade implements Serializable{
 	public String toString() {
 		return "Cidade [id=" + id + ", nome=" + nome_cidade + ", uf=" + uf.getNome_uf() + "]";
 	}
-	
+
 }

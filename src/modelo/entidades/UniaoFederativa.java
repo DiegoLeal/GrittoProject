@@ -2,13 +2,13 @@ package modelo.entidades;
 
 import java.io.Serializable;
 
-public class UniaoFederativa implements Serializable{
+public class UniaoFederativa implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
 	private String nome_uf;
-	
+
 	public UniaoFederativa() {
 	}
 
@@ -63,5 +63,5 @@ public class UniaoFederativa implements Serializable{
 	public String toString() {
 		return "Uniao_federativa [id=" + id + ", nome_uf=" + nome_uf + "]";
 	}
-	
+
 }

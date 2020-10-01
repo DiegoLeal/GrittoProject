@@ -14,43 +14,36 @@ import db.DbIntegrityException;
 import modelo.dao.RuaDao;
 import modelo.entidades.Rua;
 
-public class RuaDaoJDBC implements RuaDao{
+public class RuaDaoJDBC implements RuaDao {
 	private Connection conn;
-	
+
 	public RuaDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
-	
+
 	@Override
 	public void insert(Rua obj) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement(
-					"INSERT INTO rua "
-					+ "(nome) "
-					+ "VALUES "
-					+ "(?)",
+			st = conn.prepareStatement("INSERT INTO rua " + "(nome) " + "VALUES " + "(?)",
 					Statement.RETURN_GENERATED_KEYS);
-			
+
 			st.setString(1, obj.getNome_rua());
-			
+
 			int rowsAffected = st.executeUpdate();
-			
+
 			if (rowsAffected > 0) {
 				ResultSet rs = st.getGeneratedKeys();
 				if (rs.next()) {
 					int id = rs.getInt(1);
 					obj.setId(id);
 				}
-			}
-			else {
+			} else {
 				throw new DbException("Erro inesperado! Nenhuma linha afetada!");
 			}
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 		}
 	}
@@ -58,22 +51,17 @@ public class RuaDaoJDBC implements RuaDao{
 	@Override
 	public void update(Rua obj) {
 		PreparedStatement st = null;
-		
+
 		try {
-			st = conn.prepareStatement(
-					"UPDATE rua "
-					+ "SET nome = ? "
-					+ "WHERE id = ?");
-			
+			st = conn.prepareStatement("UPDATE rua " + "SET nome = ? " + "WHERE id = ?");
+
 			st.setString(1, obj.getNome_rua());
 			st.setInt(2, obj.getId());
-			
+
 			st.executeUpdate();
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 		}
 	}
@@ -81,18 +69,14 @@ public class RuaDaoJDBC implements RuaDao{
 	@Override
 	public void deleteById(Integer id) {
 		PreparedStatement st = null;
-		
+
 		try {
-			st = conn.prepareStatement(
-					"DELETE FROM rua "
-					+ "WHERE id = ?");
+			st = conn.prepareStatement("DELETE FROM rua " + "WHERE id = ?");
 			st.setInt(1, id);
 			st.executeUpdate();
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 		}
 	}
@@ -102,23 +86,20 @@ public class RuaDaoJDBC implements RuaDao{
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement(
-					"SELECT * FROM rua WHERE id = ?");
+			st = conn.prepareStatement("SELECT * FROM rua WHERE id = ?");
 			st.setInt(1, id);
 			rs = st.executeQuery();
-			
-			if(rs.next()) {
+
+			if (rs.next()) {
 				Rua obj = new Rua();
 				obj.setId(rs.getInt("id"));
 				obj.setNome_rua(rs.getString("nome"));
 				return obj;
 			}
 			return null;
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
@@ -129,12 +110,11 @@ public class RuaDaoJDBC implements RuaDao{
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement(
-					"SELECT FROM rua ORDER BY nome");
+			st = conn.prepareStatement("SELECT FROM rua ORDER BY nome");
 			rs = st.executeQuery();
-			
+
 			List<Rua> list = new ArrayList<>();
-			
+
 			while (rs.next()) {
 				Rua obj = new Rua();
 				obj.setId(rs.getInt("id"));
@@ -142,11 +122,9 @@ public class RuaDaoJDBC implements RuaDao{
 				list.add(obj);
 			}
 			return list;
-		}
-		catch (SQLException e ) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}

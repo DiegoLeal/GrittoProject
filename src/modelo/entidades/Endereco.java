@@ -2,16 +2,16 @@ package modelo.entidades;
 
 import java.io.Serializable;
 
-public class Endereco implements Serializable{
+public class Endereco implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
 	private String cep;
 	private Cidade cidade;
 	private Rua rua;
 	private Bairro bairro;
-	
+
 	public Endereco() {
 	}
 
@@ -90,6 +90,7 @@ public class Endereco implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Endereco [" + id + ", " + cep + "," + cidade.getNome_cidade() + "," + rua.getNome_rua() + "," + bairro.getNome_bairro() + "]";
+		return "Endereco [" + id + ", " + cep + "," + cidade.getNome_cidade() + "," + rua.getNome_rua() + ","
+				+ bairro.getNome_bairro() + "]";
 	}
 }

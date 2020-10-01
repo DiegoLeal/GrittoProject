@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Usuario implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String nome;
@@ -14,14 +14,14 @@ public class Usuario implements Serializable {
 	private String telefone;
 	private String senha;
 	private String email;
-	private String sexo;	
+	private String sexo;
 	private CatServico catServico;
-	
-	public Usuario() {		
+
+	public Usuario() {
 	}
 
-	public Usuario(Integer id, String nome, String rg, String cpf, Date dataNascimento, String telefone, String senha, String email, String sexo,
-			CatServico catServico) {		
+	public Usuario(Integer id, String nome, String rg, String cpf, Date dataNascimento, String telefone, String senha,
+			String email, String sexo, CatServico catServico) {
 		this.id = id;
 		this.nome = nome;
 		this.rg = rg;
@@ -81,7 +81,7 @@ public class Usuario implements Serializable {
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
-	
+
 	public String getSenha() {
 		return senha;
 	}
@@ -142,6 +142,7 @@ public class Usuario implements Serializable {
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", nome=" + nome + ", rg=" + rg + ", cpf=" + cpf + ", dataNascimento="
-				+ dataNascimento + ", telefone=" + telefone + ", senha=" + senha + ", email=" + email + ", sexo=" + sexo + ", profissao=" + catServico + "]";
+				+ dataNascimento + ", telefone=" + telefone + ", senha=" + senha + ", email=" + email + ", sexo=" + sexo
+				+ ", profissao=" + catServico + "]";
 	}
 }

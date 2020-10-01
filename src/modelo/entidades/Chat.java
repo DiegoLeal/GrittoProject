@@ -3,14 +3,14 @@ package modelo.entidades;
 import java.io.Serializable;
 
 public class Chat implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private Usuario remetente;
 	private Usuario destinatario;
 	private String mensagem;
-	
-	public Chat() {		
+
+	public Chat() {
 	}
 
 	public Chat(Integer id, Usuario remetente, Usuario destinatario, String mensagem) {
@@ -19,7 +19,7 @@ public class Chat implements Serializable {
 		this.destinatario = destinatario;
 		this.mensagem = mensagem;
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -83,5 +83,3 @@ public class Chat implements Serializable {
 	}
 
 }
-
-

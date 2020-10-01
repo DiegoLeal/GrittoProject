@@ -14,9 +14,9 @@ public class CatServico implements Serializable {
 
 	@Size(max = 10, message = "Numero maximo de caracteres atindidos")
 	private String nome;
-	
-	public CatServico () {
-		
+
+	public CatServico() {
+
 	}
 
 	public CatServico(Integer id, String nome) {
@@ -68,5 +68,5 @@ public class CatServico implements Serializable {
 	@Override
 	public String toString() {
 		return "CatServico [id=" + id + ", nome=" + nome + "]";
-	}	
+	}
 }
