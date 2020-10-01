@@ -71,10 +71,9 @@ public class EnderecoController {
 			return json;
 			
 		} catch (JSONException e) {
-			
-			JSONObject json_err = new JSONObject();
-			json_err.put("erro", e.getMessage());
-			return json_err;
+
+			json.put("erro", e.getMessage());
+			return json;
 		}
 	}
 
@@ -95,7 +94,6 @@ public class EnderecoController {
 
 		} catch (JSONException e) {
 
-			JSONObject json = new JSONObject();
 			json.put("erro", e.getMessage());
 			return json;
 
@@ -132,6 +130,7 @@ public class EnderecoController {
 	public JSONObject Delete(Integer id) {
 
 		try {
+			
 			dao.deleteById(id);
 			return enderecoToJson(endereco);
 
