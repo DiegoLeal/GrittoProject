@@ -15,9 +15,14 @@ import modelo.entidades.Endereco;
 import modelo.entidades.Rua;
 
 public class EnderecoController {
+	
+	Endereco endereco = new Endereco();
+	EnderecoDao dao = DaoFactory.createEnderecoDao();
+	
+	JSONObject json = new JSONObject();
 
 	private Endereco jsonToEndereco(JSONObject json) {
-		Endereco endereco = new Endereco();
+		
 		Bairro bairro = new Bairro();
 		Cidade cidade = new Cidade();
 		Rua rua = new Rua();
@@ -45,7 +50,6 @@ public class EnderecoController {
 	}
 
 	private JSONObject enderecoToJson(Endereco endereco) {
-		JSONObject json = new JSONObject();
 
 		try {
 			
@@ -75,8 +79,6 @@ public class EnderecoController {
 	}
 
 	public JSONObject Create(JSONObject json) throws SQLException {
-		Endereco endereco = jsonToEndereco(json);
-		EnderecoDao dao = DaoFactory.createEnderecoDao();
 
 		dao.insert(endereco);
 
@@ -84,11 +86,9 @@ public class EnderecoController {
 	}
 
 	public JSONObject Show(Integer id) {
-		Endereco endereco = new Endereco();
 
 		try {
 
-			EnderecoDao dao = DaoFactory.createEnderecoDao();
 			endereco = dao.findById(id);
 			return enderecoToJson(endereco);
 
@@ -102,8 +102,6 @@ public class EnderecoController {
 	}
 
 	public JSONObject Edit(JSONObject json) throws SQLException {
-		Endereco endereco = jsonToEndereco(json);
-		EnderecoDao dao = DaoFactory.createEnderecoDao();
 
 		dao.update(endereco);
 
@@ -111,8 +109,6 @@ public class EnderecoController {
 	}
 
 	public JSONArray Index() {
-		Endereco endereco = new Endereco();
-		EnderecoDao dao = DaoFactory.createEnderecoDao();
 		
 		try {
 			
@@ -132,8 +128,6 @@ public class EnderecoController {
 	}
 
 	public JSONObject Delete(Integer id) {
-		Endereco endereco = new Endereco();
-		EnderecoDao dao = DaoFactory.createEnderecoDao();
 
 		try {
 			dao.deleteById(id);
