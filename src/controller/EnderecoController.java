@@ -102,7 +102,8 @@ public class EnderecoController {
 	}
 
 	public JSONObject Edit(JSONObject json) throws SQLException {
-
+		
+		endereco = jsonToEndereco(json);
 		dao.update(endereco);
 
 		return enderecoToJson(endereco);
