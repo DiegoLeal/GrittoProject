@@ -136,7 +136,6 @@ public class EnderecoController {
 			return enderecoToJson(endereco);
 
 		} catch (Exception e) {
-			JSONObject json = new JSONObject();
 			json.put("Erro", e.getMessage());
 			return json;
 		}
