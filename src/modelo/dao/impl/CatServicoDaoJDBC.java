@@ -18,18 +18,17 @@ import modelo.entidades.CatServico;
 public class CatServicoDaoJDBC implements CatServicoDao {
 
 	private Connection conn;
-	
+
 	public CatServicoDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
-	
+
 	@Override
 	public CatServico findById(Integer id) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement(
-				"SELECT * FROM catServico WHERE Id = ?");
+			st = conn.prepareStatement("SELECT * FROM catServico WHERE Id = ?");
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			if (rs.next()) {
@@ -39,11 +38,9 @@ public class CatServicoDaoJDBC implements CatServicoDao {
 				return obj;
 			}
 			return null;
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
@@ -54,8 +51,7 @@ public class CatServicoDaoJDBC implements CatServicoDao {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement(
-				"SELECT * FROM catServico ORDER BY Nome");
+			st = conn.prepareStatement("SELECT * FROM catServico ORDER BY Nome");
 			rs = st.executeQuery();
 
 			List<CatServico> list = new ArrayList<>();
@@ -67,11 +63,9 @@ public class CatServicoDaoJDBC implements CatServicoDao {
 				list.add(obj);
 			}
 			return list;
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
@@ -81,32 +75,25 @@ public class CatServicoDaoJDBC implements CatServicoDao {
 	public void insert(CatServico obj) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement(
-				"INSERT INTO catServico " 
-				+ "(Nome) " 
-				+ "VALUES " 
-				+ "(?)",				
-				Statement.RETURN_GENERATED_KEYS);
+			st = conn.prepareStatement("INSERT INTO catServico " + "(Nome) " + "VALUES " + "(?)",
+					Statement.RETURN_GENERATED_KEYS);
 
 			st.setString(1, obj.getNome());
 
 			int rowsAffected = st.executeUpdate();
-			
+
 			if (rowsAffected > 0) {
 				ResultSet rs = st.getGeneratedKeys();
 				if (rs.next()) {
 					int id = rs.getInt(1);
 					obj.setId(id);
 				}
-			}
-			else {
+			} else {
 				throw new DbException("Erro inesperado! Nenhuma linha afetada!");
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		} 
-		finally {
+		} finally {
 			DB.closeStatement(st);
 		}
 	}
@@ -115,20 +102,15 @@ public class CatServicoDaoJDBC implements CatServicoDao {
 	public void update(CatServico obj) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement(
-				"UPDATE catServico " +
-				"SET Nome = ? " +
-				"WHERE Id = ?");
+			st = conn.prepareStatement("UPDATE catServico " + "SET Nome = ? " + "WHERE Id = ?");
 
 			st.setString(1, obj.getNome());
 			st.setInt(2, obj.getId());
 
 			st.executeUpdate();
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		} 
-		finally {
+		} finally {
 			DB.closeStatement(st);
 		}
 	}
@@ -137,17 +119,14 @@ public class CatServicoDaoJDBC implements CatServicoDao {
 	public void deleteById(Integer id) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement(
-				"DELETE FROM catServico WHERE Id = ?");
+			st = conn.prepareStatement("DELETE FROM catServico WHERE Id = ?");
 
 			st.setInt(1, id);
 
 			st.executeUpdate();
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
-		} 
-		finally {
+		} finally {
 			DB.closeStatement(st);
 		}
 

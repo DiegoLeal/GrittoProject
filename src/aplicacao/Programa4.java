@@ -15,19 +15,17 @@ public class Programa4 {
 		ResultSet rs = null;
 		try {
 			conn = DB.getConnection();
-	
+
 			st = conn.createStatement();
-			
+
 			rs = st.executeQuery("select * from usuario");
-			
+
 			while (rs.next()) {
-				System.out.println(rs.getInt("Id") + ", " + rs.getString("Nome") + ", " + rs.getString("Nome"));				
+				System.out.println(rs.getInt("Id") + ", " + rs.getString("Nome") + ", " + rs.getString("Nome"));
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			DB.closeResultSet(rs);
 			DB.closeStatement(st);
 			DB.closeConnection();

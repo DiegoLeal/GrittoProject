@@ -14,43 +14,36 @@ import db.DbIntegrityException;
 import modelo.dao.UniaoFederativaDao;
 import modelo.entidades.UniaoFederativa;
 
-public class UniaoFederativaDaoJDBC implements UniaoFederativaDao{
+public class UniaoFederativaDaoJDBC implements UniaoFederativaDao {
 	private Connection conn;
-	
+
 	public UniaoFederativaDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
-	
+
 	@Override
 	public void insert(UniaoFederativa obj) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement(
-					"INSERT INTO uniaofederativa "
-					+ "(nome) "
-					+ "VALUES "
-					+ "(?)",
+			st = conn.prepareStatement("INSERT INTO uniaofederativa " + "(nome) " + "VALUES " + "(?)",
 					Statement.RETURN_GENERATED_KEYS);
-			
+
 			st.setString(1, obj.getNome_uf());
-			
+
 			int rowsAffected = st.executeUpdate();
-			
+
 			if (rowsAffected > 0) {
 				ResultSet rs = st.getGeneratedKeys();
 				if (rs.next()) {
 					int id = rs.getInt(1);
 					obj.setId(id);
 				}
-			}
-			else {
+			} else {
 				throw new DbException("Erro inesperado! Nenhuma linha afetada!");
 			}
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 		}
 	}
@@ -58,22 +51,17 @@ public class UniaoFederativaDaoJDBC implements UniaoFederativaDao{
 	@Override
 	public void update(UniaoFederativa obj) {
 		PreparedStatement st = null;
-		
+
 		try {
-			st = conn.prepareStatement(
-					"UPDATE uniaofederativa "
-					+ "SET nome = ? "
-					+ "WHERE id = ?");
-			
+			st = conn.prepareStatement("UPDATE uniaofederativa " + "SET nome = ? " + "WHERE id = ?");
+
 			st.setString(1, obj.getNome_uf());
 			st.setInt(2, obj.getId());
-			
+
 			st.executeUpdate();
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 		}
 	}
@@ -81,18 +69,14 @@ public class UniaoFederativaDaoJDBC implements UniaoFederativaDao{
 	@Override
 	public void deleteById(Integer id) {
 		PreparedStatement st = null;
-		
+
 		try {
-			st = conn.prepareStatement(
-					"DELETE FROM uniaofederativa "
-					+ "WHERE id = ?");
+			st = conn.prepareStatement("DELETE FROM uniaofederativa " + "WHERE id = ?");
 			st.setInt(1, id);
 			st.executeUpdate();
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 		}
 	}
@@ -102,23 +86,20 @@ public class UniaoFederativaDaoJDBC implements UniaoFederativaDao{
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement(
-					"SELECT * FROM uniaofederativa WHERE id = ?");
+			st = conn.prepareStatement("SELECT * FROM uniaofederativa WHERE id = ?");
 			st.setInt(1, id);
 			rs = st.executeQuery();
-			
-			if(rs.next()) {
+
+			if (rs.next()) {
 				UniaoFederativa obj = new UniaoFederativa();
 				obj.setId(rs.getInt("id"));
 				obj.setNome_uf(rs.getString("nome"));
 				return obj;
 			}
 			return null;
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
@@ -129,12 +110,11 @@ public class UniaoFederativaDaoJDBC implements UniaoFederativaDao{
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement(
-					"SELECT * FROM uniaofederativa ORDER BY nome");
+			st = conn.prepareStatement("SELECT * FROM uniaofederativa ORDER BY nome");
 			rs = st.executeQuery();
-			
+
 			List<UniaoFederativa> list = new ArrayList<>();
-			
+
 			while (rs.next()) {
 				UniaoFederativa obj = new UniaoFederativa();
 				obj.setId(rs.getInt("id"));
@@ -142,14 +122,11 @@ public class UniaoFederativaDaoJDBC implements UniaoFederativaDao{
 				list.add(obj);
 			}
 			return list;
-		}
-		catch (SQLException e ) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
 	}
 }
-

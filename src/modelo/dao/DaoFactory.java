@@ -13,7 +13,7 @@ import modelo.dao.impl.UniaoFederativaDaoJDBC;
 import modelo.dao.impl.UsuarioDaoJDBC;
 
 public class DaoFactory {
-	
+
 	public static UsuarioDao createUsuarioDao() {
 		return new UsuarioDaoJDBC(DB.getConnection());
 	}
@@ -33,23 +33,24 @@ public class DaoFactory {
 	public static ChatDao createChatDao() {
 		return new ChatDaoJDBC(DB.getConnection());
 	}
-	public static BairroDao createBairroDao() {		
+
+	public static BairroDao createBairroDao() {
 		return new BairroDaoJDBC(DB.getConnection());
 	}
-	
-	public static CidadeDao createCidadeDao() {		
+
+	public static CidadeDao createCidadeDao() {
 		return new CidadeDaoJDBC(DB.getConnection());
 	}
-	
-	public static RuaDao createRuaDao() {		
+
+	public static RuaDao createRuaDao() {
 		return new RuaDaoJDBC(DB.getConnection());
 	}
-	
-	public static UniaoFederativaDao createUniaoFederativaDao() {		
+
+	public static UniaoFederativaDao createUniaoFederativaDao() {
 		return new UniaoFederativaDaoJDBC(DB.getConnection());
 	}
-	
-	public static EnderecoDao createEnderecoDao() {		
+
+	public static EnderecoDao createEnderecoDao() {
 		return new EnderecoDaoJDBC(DB.getConnection());
 	}
 }

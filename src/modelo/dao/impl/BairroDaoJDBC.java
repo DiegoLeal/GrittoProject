@@ -14,10 +14,10 @@ import db.DbIntegrityException;
 import modelo.dao.BairroDao;
 import modelo.entidades.Bairro;
 
-public class BairroDaoJDBC implements BairroDao{
-	
+public class BairroDaoJDBC implements BairroDao {
+
 	private Connection conn;
-	
+
 	public BairroDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
@@ -26,32 +26,25 @@ public class BairroDaoJDBC implements BairroDao{
 	public void insert(Bairro obj) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement(
-					"INSERT INTO bairro "
-					+ "(nome) "
-					+ "VALUES "
-					+ "(?)",
+			st = conn.prepareStatement("INSERT INTO bairro " + "(nome) " + "VALUES " + "(?)",
 					Statement.RETURN_GENERATED_KEYS);
-			
+
 			st.setString(1, obj.getNome_bairro());
-			
+
 			int rowsAffected = st.executeUpdate();
-			
+
 			if (rowsAffected > 0) {
 				ResultSet rs = st.getGeneratedKeys();
 				if (rs.next()) {
 					int id = rs.getInt(1);
 					obj.setId(id);
 				}
-			}
-			else {
+			} else {
 				throw new DbException("Erro inesperado! Nenhuma linha afetada!");
 			}
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 		}
 	}
@@ -59,22 +52,17 @@ public class BairroDaoJDBC implements BairroDao{
 	@Override
 	public void update(Bairro obj) {
 		PreparedStatement st = null;
-		
+
 		try {
-			st = conn.prepareStatement(
-					"UPDATE bairro "
-					+ "SET nome = ? "
-					+ "WHERE id = ?");
-			
+			st = conn.prepareStatement("UPDATE bairro " + "SET nome = ? " + "WHERE id = ?");
+
 			st.setString(1, obj.getNome_bairro());
 			st.setInt(2, obj.getId());
-			
+
 			st.executeUpdate();
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 		}
 	}
@@ -82,18 +70,14 @@ public class BairroDaoJDBC implements BairroDao{
 	@Override
 	public void deleteById(Integer id) {
 		PreparedStatement st = null;
-		
+
 		try {
-			st = conn.prepareStatement(
-					"DELETE FROM bairro "
-					+ "WHERE id = ?");
+			st = conn.prepareStatement("DELETE FROM bairro " + "WHERE id = ?");
 			st.setInt(1, id);
 			st.executeUpdate();
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DbIntegrityException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 		}
 	}
@@ -103,23 +87,20 @@ public class BairroDaoJDBC implements BairroDao{
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement(
-					"SELECT * FROM bairro WHERE id = ?");
+			st = conn.prepareStatement("SELECT * FROM bairro WHERE id = ?");
 			st.setInt(1, id);
 			rs = st.executeQuery();
-			
-			if(rs.next()) {
+
+			if (rs.next()) {
 				Bairro obj = new Bairro();
 				obj.setId(rs.getInt("id"));
 				obj.setNome_bairro(rs.getString("nome"));
 				return obj;
 			}
 			return null;
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
@@ -130,12 +111,11 @@ public class BairroDaoJDBC implements BairroDao{
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement(
-					"SELECT FROM bairro ORDER BY nome");
+			st = conn.prepareStatement("SELECT FROM bairro ORDER BY nome");
 			rs = st.executeQuery();
-			
+
 			List<Bairro> list = new ArrayList<>();
-			
+
 			while (rs.next()) {
 				Bairro obj = new Bairro();
 				obj.setId(rs.getInt("id"));
@@ -143,11 +123,9 @@ public class BairroDaoJDBC implements BairroDao{
 				list.add(obj);
 			}
 			return list;
-		}
-		catch (SQLException e ) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}

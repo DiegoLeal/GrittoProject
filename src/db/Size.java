@@ -9,9 +9,8 @@ import java.lang.annotation.Target;
 @Target({ ElementType.ANNOTATION_TYPE, ElementType.METHOD, ElementType.FIELD })
 public @interface Size {
 
+	int max() default -1;
 
-    int max() default -1;
-
-    String message() default "";
+	String message() default "";
 
 }

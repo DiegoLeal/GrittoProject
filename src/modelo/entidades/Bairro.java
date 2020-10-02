@@ -2,13 +2,13 @@ package modelo.entidades;
 
 import java.io.Serializable;
 
-public class Bairro implements Serializable{
+public class Bairro implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
 	private String nome_bairro;
-	
+
 	public Bairro() {
 	}
 
@@ -63,5 +63,5 @@ public class Bairro implements Serializable{
 	public String toString() {
 		return "Bairro [id=" + id + ", nome_bairro=" + nome_bairro + "]";
 	}
-	
+
 }
