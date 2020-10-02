@@ -12,18 +12,20 @@ import com.sun.net.httpserver.HttpServer;
 public class Main {
 
 	public static void main(String[] args) {
+		
 		try {
 			HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
 			ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
 			server.createContext("/endereco", new EnderecoHttpHandler());
 			server.setExecutor(threadPoolExecutor);
 			server.start();
-			Logger.getLogger("Server started on port 8001");
+			Logger logger = Logger.getLogger(Main.class.getName());
+			logger.info("Server started on port 8001");
 			
-		} catch (IOException ex) {
-			Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-			ex.printStackTrace();
+		} catch (IOException e) {
+			Logger.getLogger(Main.class.getName()).log(Level.SEVERE, e.getMessage());
 		}
+
 	}
 
 }

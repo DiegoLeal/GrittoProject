@@ -4,20 +4,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.sql.SQLException;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.sun.istack.internal.logging.Logger;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import controller.EnderecoController;
 
-public class EnderecoHttpHandler implements HttpHandler {
-
+public class EnderecoHttpHandler implements HttpHandler{
+	
 	@Override
 	public void handle(HttpExchange httpExchange) throws IOException {
 		String requestParamValue = null;
@@ -56,12 +55,12 @@ public class EnderecoHttpHandler implements HttpHandler {
 				httpExchange.sendResponseHeaders(200, json_array.toString().getBytes().length);
 				outStream.write(json_array.toString().getBytes("UTF-8"));
 
-			} catch (SQLException e) {
+			} catch (IOException e) {
 
 				json = new JSONObject();
 				json.put("status", "not found");
 				outStream.write(json.toString().getBytes());
-				Logger.getLogger(EnderecoHttpHandler.class.getName(), null).log(Level.SEVERE, null, e);
+				Logger.getLogger(EnderecoHttpHandler.class.getName(), null).log(Level.SEVERE, e.getMessage());
 			}
 
 			outStream.flush();
@@ -75,16 +74,9 @@ public class EnderecoHttpHandler implements HttpHandler {
 				json = controller.Show(id);
 				httpExchange.sendResponseHeaders(200, json.toString().length());
 
-			} catch (SQLException e) {
-
-				Logger.getLogger(EnderecoHttpHandler.class.getName(), null).log(Level.SEVERE, null, e);
-				json = new JSONObject();
-				json.put("status", "not found");
-				httpExchange.sendResponseHeaders(404, json.toString().length());
-
 			} catch (IOException e) {
 
-				Logger.getLogger(EnderecoHttpHandler.class.getName(), null).log(Level.SEVERE, null, e);
+				Logger.getLogger(EnderecoHttpHandler.class.getName(), null).log(Level.SEVERE, e.getMessage());
 				json = new JSONObject();
 				json.put("status", "server error");
 				httpExchange.sendResponseHeaders(500, json.toString().length());
@@ -149,7 +141,7 @@ public class EnderecoHttpHandler implements HttpHandler {
 				outStream.write(json.toString().getBytes());
 				httpExchange.sendResponseHeaders(404, json.toString().length());
 				outStream.write(json.toString().getBytes());
-				Logger.getLogger(EnderecoHttpHandler.class.getName(), null).log(Level.SEVERE, null, e);
+				Logger.getLogger(EnderecoHttpHandler.class.getName(), null).log(Level.SEVERE, e.getMessage());
 			}
 
 		} else {
