@@ -19,8 +19,7 @@ public class EnderecoHttpHandler implements HttpHandler{
 	
 	@Override
 	public void handle(HttpExchange httpExchange) throws IOException {
-		String requestParamValue = null;
-
+		
 		if (null == httpExchange.getRequestMethod()) {
 
 		} else
@@ -47,9 +46,19 @@ public class EnderecoHttpHandler implements HttpHandler{
 		int id = 0;
 
 		if (request_uri.split("/").length <= 2) {
-			JSONArray json_array = null;
-
+			JSONArray json_array = new JSONArray();
+			json_array = null;
+			
 			try {
+				
+				httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin", "http://localhost:3000");
+
+			    if (httpExchange.getRequestMethod().equalsIgnoreCase("OPTIONS")) {
+			            httpExchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, DELETE");
+			            httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type,Authorization");
+			            httpExchange.sendResponseHeaders(204, -1);
+			            return;
+			        }
 
 				json_array = controller.Index();
 				httpExchange.sendResponseHeaders(200, json_array.toString().getBytes().length);
@@ -60,7 +69,8 @@ public class EnderecoHttpHandler implements HttpHandler{
 				json = new JSONObject();
 				json.put("status", "not found");
 				outStream.write(json.toString().getBytes());
-				Logger.getLogger(EnderecoHttpHandler.class.getName(), null).log(Level.SEVERE, e.getMessage());
+				Logger logger = Logger.getLogger(EnderecoHttpHandler.class.getName(), null);
+				logger.info(e.getMessage());
 			}
 
 			outStream.flush();
@@ -72,11 +82,12 @@ public class EnderecoHttpHandler implements HttpHandler{
 
 				id = Integer.valueOf(request_uri.split("/")[2]);
 				json = controller.Show(id);
-				httpExchange.sendResponseHeaders(200, json.toString().length());
+				httpExchange.sendResponseHeaders(200, json.toString().getBytes().length);
 
 			} catch (IOException e) {
 
-				Logger.getLogger(EnderecoHttpHandler.class.getName(), null).log(Level.SEVERE, e.getMessage());
+				Logger logger = Logger.getLogger(EnderecoHttpHandler.class.getName());
+				logger.info(e.getMessage());
 				json = new JSONObject();
 				json.put("status", "server error");
 				httpExchange.sendResponseHeaders(500, json.toString().length());
