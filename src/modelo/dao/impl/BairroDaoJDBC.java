@@ -111,7 +111,7 @@ public class BairroDaoJDBC implements BairroDao {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement("SELECT FROM bairro ORDER BY nome");
+			st = conn.prepareStatement("SELECT * FROM bairro ORDER BY nome");
 			rs = st.executeQuery();
 
 			List<Bairro> list = new ArrayList<>();
