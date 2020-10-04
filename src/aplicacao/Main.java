@@ -17,6 +17,7 @@ public class Main {
 			HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 3001), 0);
 			ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
 			server.createContext("/endereco", new EnderecoHttpHandler());
+			server.createContext("/uf", new UniaoFederativaHttpHandler());
 			server.setExecutor(threadPoolExecutor);
 			server.start();
 			Logger logger = Logger.getLogger(Main.class.getName());
