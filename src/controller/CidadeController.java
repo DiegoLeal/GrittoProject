@@ -1,6 +1,5 @@
 package controller;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -16,8 +15,6 @@ public class CidadeController {
 	
 	Cidade cidade = new Cidade();
 	CidadeDao cidade_dao = DaoFactory.createCidadeDao();
-	
-	JSONObject json = new JSONObject();
 	
 	private Cidade jsonToCidade(JSONObject json) {
 		
@@ -37,6 +34,7 @@ public class CidadeController {
 	}
 	
 	private JSONObject cidadeToJson(Cidade cidade) {
+		JSONObject json = new JSONObject();
 		
 		try {
 			
@@ -55,7 +53,7 @@ public class CidadeController {
 		}
 	}
 	
-	public JSONObject Create(JSONObject json) throws SQLException {
+	public JSONObject Create(JSONObject json) {
 		
 		cidade_dao.insert(cidade);
 		
@@ -63,6 +61,7 @@ public class CidadeController {
 	}
 	
 	public JSONObject Show(Integer id) {
+		JSONObject json = new JSONObject();
 		
 		try {
 			
@@ -77,7 +76,7 @@ public class CidadeController {
 		}
 	}
 	
-	public JSONObject Edit(JSONObject json) throws SQLException {
+	public JSONObject Edit(JSONObject json) {
 		
 		cidade = jsonToCidade(json);
 		cidade_dao.update(cidade);
@@ -104,6 +103,7 @@ public class CidadeController {
 	}
 	
 	public JSONObject Delete(Integer id) {
+		JSONObject json = new JSONObject();
 		
 		try {
 			cidade_dao.deleteById(id);

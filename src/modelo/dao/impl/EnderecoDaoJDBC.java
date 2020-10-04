@@ -143,12 +143,15 @@ public class EnderecoDaoJDBC implements EnderecoDao {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement("SELECT endereco.*,cidade.nome as CID, "
-					+ "bairro.nome as BRO, rua.nome as RUA, " + "uniaofederativa.nome as UF, uniaofederativa.id "
-					+ "FROM endereco INNER JOIN cidade " + "ON endereco.cidade_id = cidade.id "
-					+ "INNER JOIN uniaofederativa " + "ON cidade.uf_id = uniaofederativa.id " + "INNER JOIN bairro "
-					+ "ON endereco.bairro_id = bairro.id " + "INNER JOIN rua " + "ON endereco.rua_id = rua.id "
-					+ "ORDER BY CID");
+			st = conn.prepareStatement("SELECT endereco.*,cidade.nome as CIDADE, "
+										+ "bairro.nome as BAIRRO, rua.nome as RUA, " + "uniaofederativa.nome as UF, uniaofederativa.id as UF_ID "
+										+ "FROM endereco INNER JOIN cidade " 
+										+ "ON endereco.cidade_id = cidade.id "
+										+ "INNER JOIN uniaofederativa " 
+										+ "ON cidade.uf_id = uniaofederativa.id " 
+										+ "INNER JOIN bairro "
+										+ "ON endereco.bairro_id = bairro.id " + "INNER JOIN rua " + "ON endereco.rua_id = rua.id "
+										+ "ORDER BY CIDADE");
 
 			rs = st.executeQuery();
 

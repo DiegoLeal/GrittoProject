@@ -1,6 +1,6 @@
 package controller;
 
-import java.sql.SQLException;
+
 import java.util.List;
 
 import org.json.JSONArray;
@@ -19,7 +19,6 @@ public class EnderecoController {
 	Endereco endereco = new Endereco();
 	EnderecoDao dao = DaoFactory.createEnderecoDao();
 	
-	JSONObject json = new JSONObject();
 
 	private Endereco jsonToEndereco(JSONObject json) {
 		
@@ -50,7 +49,8 @@ public class EnderecoController {
 	}
 
 	private JSONObject enderecoToJson(Endereco endereco) {
-
+		JSONObject json = new JSONObject();
+		
 		try {
 			
 			json.put("id", endereco.getId());
@@ -77,7 +77,7 @@ public class EnderecoController {
 		}
 	}
 
-	public JSONObject Create(JSONObject json) throws SQLException {
+	public JSONObject Create(JSONObject json) {
 		
 		endereco = jsonToEndereco(json);
 		dao.insert(endereco);
@@ -86,7 +86,7 @@ public class EnderecoController {
 	}
 
 	public JSONObject Show(Integer id) {
-
+		JSONObject json = new JSONObject();
 		try {
 
 			endereco = dao.findById(id);
@@ -100,7 +100,7 @@ public class EnderecoController {
 		}
 	}
 
-	public JSONObject Edit(JSONObject json) throws SQLException {
+	public JSONObject Edit(JSONObject json) {
 		
 		endereco = jsonToEndereco(json);
 		dao.update(endereco);
@@ -114,10 +114,12 @@ public class EnderecoController {
 			
 			List<Endereco> enderecos = dao.findAll();
 			JSONArray json = new JSONArray();
-	
+			
+			enderecos = dao.findAll();
 			enderecos.forEach(endereco_atual -> {
 				json.put(enderecoToJson(endereco_atual));
 			});
+			
 			return json;
 			
 		} catch (JSONException e) {
@@ -128,7 +130,7 @@ public class EnderecoController {
 	}
 
 	public JSONObject Delete(Integer id) {
-
+		JSONObject json = new JSONObject();
 		try {
 			
 			dao.deleteById(id);

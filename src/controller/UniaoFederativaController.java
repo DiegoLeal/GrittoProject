@@ -1,6 +1,5 @@
 package controller;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -15,8 +14,6 @@ public class UniaoFederativaController {
 	
 	UniaoFederativa uf = new UniaoFederativa();
 	UniaoFederativaDao uf_dao = DaoFactory.createUniaoFederativaDao();
-	
-	JSONObject json = new JSONObject();
 	
 	private UniaoFederativa jsonToUniaoFederativa(JSONObject json) {
 				
@@ -33,6 +30,7 @@ public class UniaoFederativaController {
 	}
 	
 	private JSONObject uniaofederativaToJson(UniaoFederativa uf) {
+		JSONObject json = new JSONObject();
 		
 		try {
 			
@@ -46,7 +44,7 @@ public class UniaoFederativaController {
 		return json;
 	}
 	
-	public JSONObject Create(JSONObject json) throws SQLException, JSONException {
+	public JSONObject Create(JSONObject json) {
 		
 		uf = jsonToUniaoFederativa(json);		
 		uf_dao.insert(uf);
@@ -54,7 +52,8 @@ public class UniaoFederativaController {
 		return uniaofederativaToJson(uf);
 	}
 	
-	public JSONObject Show(Integer id) throws SQLException, JSONException {
+	public JSONObject Show(Integer id) {
+		JSONObject json = new JSONObject();
 		
 		try {
 			
@@ -68,7 +67,7 @@ public class UniaoFederativaController {
 		
 	}
 	
-	public JSONObject Edit(JSONObject json) throws SQLException, JSONException {
+	public JSONObject Edit(JSONObject json) {
 		
 		uf = jsonToUniaoFederativa(json);
 		uf_dao.update(uf);
@@ -77,23 +76,22 @@ public class UniaoFederativaController {
 	
 	}
 	
-	public JSONArray Index() throws SQLException, JSONException {
+	public JSONArray Index() {
+		JSONArray json = new JSONArray();
 		
 		try {
 			
 			List<UniaoFederativa> ufs = uf_dao.findAll();
-			JSONArray json = new JSONArray();
 			
 			ufs.forEach(uf_atual -> {
 				json.put(uniaofederativaToJson(uf_atual));
 			});
 			
-			return json;
-			
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
 		}
+		
+		return json;
 	}
 	
 	public JSONObject Delete(Integer id) {

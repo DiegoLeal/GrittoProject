@@ -1,6 +1,5 @@
 package controller;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -15,8 +14,6 @@ public class RuaController {
 	
 	Rua rua = new Rua();
 	RuaDao rua_dao = DaoFactory.createRuaDao();
-	
-	JSONObject json = new JSONObject();
 	
 	private Rua jsonToRua(JSONObject json) {
 		
@@ -33,6 +30,7 @@ public class RuaController {
 	}
 	
 	private JSONObject ruaToJson(Rua rua) {
+		JSONObject json = new JSONObject();
 		
 		try {
 			
@@ -47,7 +45,7 @@ public class RuaController {
 		}	
 	}
 	
-	public JSONObject Create(JSONObject json) throws SQLException {
+	public JSONObject Create(JSONObject json) {
 		
 		rua = jsonToRua(json);
 		rua_dao.insert(rua);
@@ -56,6 +54,7 @@ public class RuaController {
 	}
 	
 	public JSONObject Show(Integer id) {
+		JSONObject json = new JSONObject();
 		
 		try {
 			rua = rua_dao.findById(id);
@@ -67,7 +66,7 @@ public class RuaController {
 		}
 	}
 	
-	public JSONObject Edit(JSONObject json) throws SQLException {
+	public JSONObject Edit(JSONObject json) {
 		
 		rua = jsonToRua(json);
 		rua_dao.update(rua);
@@ -95,6 +94,7 @@ public class RuaController {
 	}
 	
 	public JSONObject Delete(Integer id) {
+		JSONObject json = new JSONObject();
 		
 		try {
 			
