@@ -47,10 +47,9 @@ public class EnderecoHttpHandler implements HttpHandler{
 
 		if (request_uri.split("/").length <= 2) {
 			JSONArray json_array = new JSONArray();
-			json_array = null;
 			
 			try {
-				
+		
 				httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin", "http://localhost:3000");
 
 			    if (httpExchange.getRequestMethod().equalsIgnoreCase("OPTIONS")) {
