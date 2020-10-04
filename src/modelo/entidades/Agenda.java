@@ -16,6 +16,9 @@ public class Agenda implements Modal {
 		this.hora = hora;
 	}
 
+	public Agenda() {
+	}
+
 	private Long id;
 
 	private LocalDate data;
