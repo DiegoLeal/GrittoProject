@@ -1,6 +1,6 @@
 package controller;
 
-import java.sql.SQLException;
+
 import java.util.List;
 
 import org.json.JSONArray;
@@ -77,7 +77,7 @@ public class EnderecoController {
 		}
 	}
 
-	public JSONObject Create(JSONObject json) throws SQLException {
+	public JSONObject Create(JSONObject json) {
 		
 		endereco = jsonToEndereco(json);
 		dao.insert(endereco);
@@ -100,7 +100,7 @@ public class EnderecoController {
 		}
 	}
 
-	public JSONObject Edit(JSONObject json) throws SQLException {
+	public JSONObject Edit(JSONObject json) {
 		
 		endereco = jsonToEndereco(json);
 		dao.update(endereco);
