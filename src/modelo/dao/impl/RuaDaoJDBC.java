@@ -110,7 +110,7 @@ public class RuaDaoJDBC implements RuaDao {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement("SELECT FROM rua ORDER BY nome");
+			st = conn.prepareStatement("SELECT * FROM rua ORDER BY nome");
 			rs = st.executeQuery();
 
 			List<Rua> list = new ArrayList<>();

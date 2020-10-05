@@ -121,7 +121,7 @@ public class CidadeDaoJDBC implements CidadeDao {
 		try {
 			st = conn.prepareStatement(
 					"SELECT cidade.*, uniaofederativa.nome as UF " + "FROM cidade INNER JOIN uniaofederativa "
-							+ "ON cidade.uf_id = uniaofederativa.id " + "ORDER BY nome");
+							+ "ON cidade.uf_id = uniaofederativa.id " + "ORDER BY cidade.nome");
 
 			rs = st.executeQuery();
 

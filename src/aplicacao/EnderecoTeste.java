@@ -6,7 +6,9 @@ import java.util.Scanner;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import controller.BairroController;
 import controller.EnderecoController;
+import controller.RuaController;
 import modelo.dao.BairroDao;
 import modelo.dao.CidadeDao;
 import modelo.dao.DaoFactory;
@@ -39,6 +41,8 @@ public class EnderecoTeste {
 	static Endereco endereco = new Endereco();
 
 	static EnderecoController controller = new EnderecoController();
+	static BairroController bairro_controller = new BairroController();
+	static RuaController rua_controller = new RuaController();
 
 	static JSONObject json = new JSONObject();
 
@@ -100,7 +104,7 @@ public class EnderecoTeste {
 
 			} catch (Exception e) {
 				e.printStackTrace();
-
+				break;
 			}
 
 		case 3:
@@ -379,8 +383,12 @@ public class EnderecoTeste {
 			// Bairro
 			try {
 
-				List<Bairro> list = bairro_dao.findAll();
-				System.out.println(list);
+				//List<Bairro> list = bairro_dao.findAll();
+				//System.out.println(list);
+				
+				JSONArray json = new JSONArray();
+				json = bairro_controller.Index();
+				System.out.println(json);
 				break;
 
 			} catch (Exception e) {
@@ -391,8 +399,13 @@ public class EnderecoTeste {
 			// Rua
 			try {
 
-				List<Rua> list = rua_dao.findAll();
-				System.out.println(list);
+				//List<Rua> list = rua_dao.findAll();
+				//System.out.println(list);
+				
+				JSONArray json = new JSONArray();
+				json = rua_controller.Index();
+				System.out.println(json);
+				
 				break;
 
 			} catch (Exception e) {

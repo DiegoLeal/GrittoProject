@@ -14,15 +14,24 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import controller.EnderecoController;
+import jdk.nashorn.internal.parser.JSONParser;
 
 public class EnderecoHttpHandler implements HttpHandler{
 	
 	@Override
 	public void handle(HttpExchange httpExchange) throws IOException {
-		
 		if (null == httpExchange.getRequestMethod()) {
 
 		} else
+			httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin", "http://localhost:3000");
+
+			if (httpExchange.getRequestMethod().equalsIgnoreCase("OPTIONS")) {
+	            httpExchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+	            httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type,Authorization");
+	            httpExchange.sendResponseHeaders(200, -1);
+	           
+	        }
+			
 			switch (httpExchange.getRequestMethod()) {
 			case "GET":
 				handleGetRequest(httpExchange);
@@ -50,15 +59,6 @@ public class EnderecoHttpHandler implements HttpHandler{
 			
 			try {
 		
-				httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin", "http://localhost:3000");
-
-			    if (httpExchange.getRequestMethod().equalsIgnoreCase("OPTIONS")) {
-			            httpExchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, DELETE");
-			            httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type,Authorization");
-			            httpExchange.sendResponseHeaders(204, -1);
-			            return;
-			        }
-
 				json_array = controller.Index();
 				httpExchange.sendResponseHeaders(200, json_array.toString().getBytes().length);
 				outStream.write(json_array.toString().getBytes("UTF-8"));
@@ -68,7 +68,7 @@ public class EnderecoHttpHandler implements HttpHandler{
 				json = new JSONObject();
 				json.put("status", "not found");
 				outStream.write(json.toString().getBytes());
-				Logger logger = Logger.getLogger(EnderecoHttpHandler.class.getName(), null);
+				Logger logger = Logger.getLogger(EnderecoHttpHandler.class.getName());
 				logger.info(e.getMessage());
 			}
 
@@ -100,8 +100,8 @@ public class EnderecoHttpHandler implements HttpHandler{
 
 	private void handlePostRequest(HttpExchange httpExchange) throws IOException {
 		OutputStream outStream = httpExchange.getResponseBody();
-		httpExchange.sendResponseHeaders(200, "teste".length());
-		outStream.write("teste".getBytes());
+		httpExchange.sendResponseHeaders(200, "Ok".length());
+		outStream.write("Ok".getBytes());
 
 		InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
 		BufferedReader br = new BufferedReader(isr);
@@ -113,10 +113,21 @@ public class EnderecoHttpHandler implements HttpHandler{
 		}
 		br.close();
 		isr.close();
-
-		System.out.println(buf.toString());
+		
+		String end = buf.toString();
+		
+		JSONObject json = new JSONObject(end);
+		System.out.println(json);
+		
+		EnderecoController controller = new EnderecoController();
+		controller.Create(json);
+				
 		outStream.flush();
 		outStream.close();
+		
+		Logger logger = Logger.getLogger(EnderecoHttpHandler.class.getName());
+		logger.info("Cadastro Efetuado");
+		
 	}
 
 	private void handlePutRequest(HttpExchange httpExchange) {

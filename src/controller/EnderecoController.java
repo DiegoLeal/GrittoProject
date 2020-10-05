@@ -28,15 +28,18 @@ public class EnderecoController {
 
 		try {
 			
-			endereco.setId(json.getInt("id"));
+			//endereco.setId(json.getInt("id"));
 			
 			cidade.setId(json.getInt("cidade_id"));
+			System.out.println(cidade.getId());
 			endereco.setCidade(cidade);
 			
 			bairro.setId(json.getInt("bairro_id"));
+			System.out.println(bairro.getId());
 			endereco.setBairro(bairro);
 			
 			rua.setId(json.getInt("rua_id"));
+			System.out.println(rua.getId());
 			endereco.setRua(rua);
 			
 			endereco.setCep(json.getString("cep"));

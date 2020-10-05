@@ -20,6 +20,7 @@ public class Main {
 			server.createContext("/uf", new UniaoFederativaHttpHandler());
 			server.createContext("/cidade", new CidadeHttpHandler());
 			server.createContext("/bairro", new BairroHttpHandler());
+			server.createContext("/rua", new RuaHttpHandler());
 			server.setExecutor(threadPoolExecutor);
 			server.start();
 			Logger logger = Logger.getLogger(Main.class.getName());
