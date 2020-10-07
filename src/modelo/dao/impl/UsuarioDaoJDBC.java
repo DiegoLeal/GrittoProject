@@ -29,18 +29,19 @@ public class UsuarioDaoJDBC implements UsuarioDao {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement("INSERT INTO usuario "
-					+ "(Nome, Rg, Cpf, DataNascimento, Telefone, Senha, Email, Sexo, CatServicoId) " + "VALUES "
-					+ "(?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+					+ "(Nome, Rg, Cpf, DataNascimento, Telefone, Senha, Email, Sexo) " + "VALUES "
+					+ "(?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
 			st.setString(1, obj.getNome());
+			System.out.println(obj.getNome());
 			st.setString(2, obj.getRg());
 			st.setString(3, obj.getCpf());
-			st.setDate(4, new java.sql.Date(obj.getDataNascimento().getTime()));
+			st.setDate(4, new java.sql.Date (obj.getDataNascimento().getTime()));
 			st.setString(5, obj.getTelefone());
 			st.setString(6, obj.getSenha());
 			st.setString(7, obj.getEmail());
 			st.setString(8, obj.getSexo());
-			st.setInt(9, obj.getCatServico().getId());
+			//st.setInt(9, obj.getCatServico().getId());
 
 			int rowsAffected = st.executeUpdate();
 
@@ -110,8 +111,9 @@ public class UsuarioDaoJDBC implements UsuarioDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT usuario.*,catservico.Nome as ProfNome " + "FROM usuario INNER JOIN catservico "
-							+ "ON usuario.CatServicoId = catservico.Id " + "ORDER BY Nome");
+					"SELECT usuario.*,categoria_servico.Nome as ProfNome " + "FROM usuario "
+							+ "INNER JOIN categoria_servico "
+							+ "ON usuario.CatServicoId = categoria_servico.Id " + "ORDER BY Nome");
 
 			rs = st.executeQuery();
 
@@ -120,11 +122,11 @@ public class UsuarioDaoJDBC implements UsuarioDao {
 
 			while (rs.next()) {
 
-				CatServico prof = map.get(rs.getInt("CatServico"));
+				CatServico prof = map.get(rs.getInt("catservicoid"));
 
 				if (prof == null) {
 					prof = instantiateCatServico(rs);
-					map.put(rs.getInt("CatServico"), prof);
+					map.put(rs.getInt("catservicoid"), prof);
 				}
 
 				Usuario obj = instantiateUsuario(rs, prof);
@@ -180,7 +182,7 @@ public class UsuarioDaoJDBC implements UsuarioDao {
 
 	private CatServico instantiateCatServico(ResultSet rs) throws SQLException {
 		CatServico prof = new CatServico();
-		prof.setId(rs.getInt("CatServico"));
+		prof.setId(rs.getInt("CatServicoId"));
 		prof.setNome(rs.getString("ProfNome"));
 		return prof;
 	}
