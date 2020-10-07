@@ -16,6 +16,7 @@ public class Main {
 		try {
 			HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 3001), 0);
 			ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
+			server.createContext("/usuario", new UsuarioHttpHandler());
 			server.createContext("/endereco", new EnderecoHttpHandler());
 			server.createContext("/uf", new UniaoFederativaHttpHandler());
 			server.createContext("/cidade", new CidadeHttpHandler());
@@ -24,7 +25,7 @@ public class Main {
 			server.setExecutor(threadPoolExecutor);
 			server.start();
 			Logger logger = Logger.getLogger(Main.class.getName());
-			logger.info("Server started on port 3000");
+			logger.info("Server started on port 3001");
 			
 		} catch (IOException e) {
 			Logger logger = Logger.getLogger(Main.class.getName());

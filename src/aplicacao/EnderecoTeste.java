@@ -1,5 +1,10 @@
 package aplicacao;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Scanner;
 
@@ -9,20 +14,24 @@ import org.json.JSONObject;
 import controller.BairroController;
 import controller.EnderecoController;
 import controller.RuaController;
+import controller.UsuarioController;
 import modelo.dao.BairroDao;
 import modelo.dao.CidadeDao;
 import modelo.dao.DaoFactory;
 import modelo.dao.EnderecoDao;
 import modelo.dao.RuaDao;
 import modelo.dao.UniaoFederativaDao;
+import modelo.dao.UsuarioDao;
 import modelo.entidades.Bairro;
+import modelo.entidades.CatServico;
 import modelo.entidades.Cidade;
 import modelo.entidades.Endereco;
 import modelo.entidades.Rua;
 import modelo.entidades.UniaoFederativa;
+import modelo.entidades.Usuario;
 
 public class EnderecoTeste {
-	static Scanner scan = new Scanner(System.in).useDelimiter("\r");
+	static Scanner scan = new Scanner(System.in).useDelimiter("\r\n");
 	static Scanner scanInt = new Scanner(System.in);
 
 	static UniaoFederativaDao uf_dao = DaoFactory.createUniaoFederativaDao();
@@ -39,14 +48,18 @@ public class EnderecoTeste {
 
 	static EnderecoDao endereco_dao = DaoFactory.createEnderecoDao();
 	static Endereco endereco = new Endereco();
+	
+	static UsuarioDao usuario_dao = DaoFactory.createUsuarioDao();
+	static Usuario usuario = new Usuario();
 
 	static EnderecoController controller = new EnderecoController();
 	static BairroController bairro_controller = new BairroController();
 	static RuaController rua_controller = new RuaController();
+	static UsuarioController usuario_controller = new UsuarioController();
 
 	static JSONObject json = new JSONObject();
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
 
 		System.out.println("[Operações...]");
 		System.out.println("[1 = Insert..]");
@@ -61,7 +74,7 @@ public class EnderecoTeste {
 
 	}
 
-	private static void Insert(int i) {
+	private static void Insert(int i) throws ParseException {
 
 		switch (i) {
 
@@ -176,7 +189,58 @@ public class EnderecoTeste {
 				e.printStackTrace();
 				break;
 			}
-
+		case 6:
+			//Usuario
+			
+			System.out.println("Digite o nome: ");
+			String newNome = scan.next();
+			
+			System.out.println("Digite o rg: ");
+			String newRg = scan.next();
+			
+			System.out.println("Digite o cpf: ");
+			String newCpf = scan.next();
+			
+			System.out.println("Digite a Data: ");
+			Scanner scanData = new Scanner(System.in);
+			String newData = scanData.next();
+			
+			System.out.println("Digite o Telefone: ");
+			String newTelefone = scan.next();
+			
+			System.out.println("Digite o Senha: ");
+			String newSenha = scan.next();
+			
+			System.out.println("Digite o Email: ");
+			String newEmail = scan.next();
+			
+			System.out.println("Digite o Sexo: ");
+			String newSexo = scan.next();
+			
+			System.out.println("Digite o id Cat.Servico: ");
+			int newCat = scanInt.nextInt();
+			
+			usuario.setNome(newNome);
+			usuario.setRg(newRg);
+			usuario.setCpf(newCpf);
+			usuario.setTelefone(newTelefone);
+			usuario.setSenha(newSenha);
+			usuario.setEmail(newEmail);
+			usuario.setSexo(newSexo);
+			CatServico catServico = new CatServico();
+			catServico.setId(newCat);
+			usuario.setCatServico(catServico);
+			
+			try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Date data = sdf.parse(newData);
+			usuario.setDataNascimento(data);
+			} catch (ParseException e) {
+				System.out.println(e.getMessage());
+			}
+			
+			usuario_dao.insert(usuario);
+			System.out.println("Cadastro efetuado");
 		default:
 			break;
 		}
@@ -424,6 +488,17 @@ public class EnderecoTeste {
 				e.printStackTrace();
 				break;
 			}
+		case 6:
+			//usuario
+			try {
+				JSONArray json_array = new JSONArray();
+				json_array = usuario_controller.Index();
+				System.out.println(json_array);
+				break;
+			} catch (Exception e) {
+				e.printStackTrace();
+				break;
+			}
 		}
 	}
 
@@ -641,7 +716,7 @@ public class EnderecoTeste {
 		}
 	}
 
-	private static void Escolha(int e) {
+	private static void Escolha(int e) throws ParseException {
 
 		switch (e) {
 
@@ -652,6 +727,7 @@ public class EnderecoTeste {
 			System.out.println("[3 Bairro..]");
 			System.out.println("[4 Rua.....]");
 			System.out.println("[5 Endereço]");
+			System.out.println("[6 Usuario.]");
 			int i = scanInt.nextInt();
 
 			if (i == 1) {
@@ -669,6 +745,9 @@ public class EnderecoTeste {
 			} else if (i == 5) {
 				Insert(5);
 				break;
+			} else if (i == 6) {
+				Insert(6);
+				break;
 			} else {
 				System.out.println("Nenhuma opção selecionada!");
 			}
@@ -680,6 +759,7 @@ public class EnderecoTeste {
 			System.out.println("[3 Bairro..]");
 			System.out.println("[4 Rua.....]");
 			System.out.println("[5 Endereço]");
+			System.out.println("[6 Usuario.]");
 			int i1 = scanInt.nextInt();
 
 			if (i1 == 1) {
@@ -697,6 +777,9 @@ public class EnderecoTeste {
 			} else if (i1 == 5) {
 				Delete(5);
 				break;
+			} else if (i1 == 6) {
+				Delete(6);
+				break;
 			} else {
 				System.out.println("Nenhuma opção selecionada!");
 			}
@@ -708,6 +791,8 @@ public class EnderecoTeste {
 			System.out.println("[3 Bairro...]");
 			System.out.println("[4 Rua......]");
 			System.out.println("[5 Endereço.]");
+			System.out.println("[6 Usuario..]");
+			
 			int i2 = scanInt.nextInt();
 
 			if (i2 == 1) {
@@ -725,6 +810,9 @@ public class EnderecoTeste {
 			} else if (i2 == 5) {
 				FindById(5);
 				break;
+			} else if (i2 == 6) {
+				FindById(6);
+				break;
 			} else {
 				System.out.println("Nenhuma opção selecionada!");
 			}
@@ -736,6 +824,7 @@ public class EnderecoTeste {
 			System.out.println("[3 Bairro..]");
 			System.out.println("[4 Rua.....]");
 			System.out.println("[5 Endereço]");
+			System.out.println("[6 Usuario.]");
 			int i3 = scanInt.nextInt();
 
 			if (i3 == 1) {
@@ -753,6 +842,9 @@ public class EnderecoTeste {
 			} else if (i3 == 5) {
 				FindAll(5);
 				break;
+			} else if (i3 == 6) {
+				FindAll(6);
+				break;
 			} else {
 				System.out.println("Nenhuma opção selecionada!");
 			}
@@ -764,6 +856,7 @@ public class EnderecoTeste {
 			System.out.println("[3 Bairro..]");
 			System.out.println("[4 Rua.....]");
 			System.out.println("[5 Endereço]");
+			System.out.println("[6 Usuario.]");
 			int i4 = scanInt.nextInt();
 
 			if (i4 == 1) {
@@ -780,6 +873,9 @@ public class EnderecoTeste {
 				break;
 			} else if (i4 == 5) {
 				Update(5);
+				break;
+			} else if (i4 == 6) {
+				Update(6);
 				break;
 			} else {
 				System.out.println("Nenhuma opção selecionada!");
